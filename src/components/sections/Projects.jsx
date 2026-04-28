@@ -3,182 +3,228 @@ import { motion, animate } from 'framer-motion'
 
 const ease = [0.22, 1, 0.36, 1]
 
-function TiltCard({ children, className, style }) {
-  const ref = useRef(null)
-
-  const handleMouseMove = (e) => {
-    const rect = ref.current.getBoundingClientRect()
-    const x = (e.clientX - rect.left) / rect.width - 0.5
-    const y = (e.clientY - rect.top) / rect.height - 0.5
-    animate(ref.current, {
-      rotateX: -y * 5,
-      rotateY: x * 5,
-      scale: 1.015,
-    }, { type: 'spring', stiffness: 300, damping: 25, mass: 0.5 })
-  }
-
-  const handleMouseLeave = () => {
-    animate(ref.current, {
-      rotateX: 0,
-      rotateY: 0,
-      scale: 1,
-    }, { type: 'spring', stiffness: 300, damping: 25, mass: 0.5 })
-  }
-
-  return (
-    <motion.div
-      ref={ref}
-      className={className}
-      style={{ transformStyle: 'preserve-3d', ...style }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-    >
-      {children}
-    </motion.div>
-  )
-}
-
-export default function Projects({ t }) {
+export default function Projects({ t, lang }) {
   const { work } = t
 
   return (
-    <section id="work" className="py-28 px-6 md:px-10 lg:px-16">
-      <div className="max-w-7xl mx-auto">
+    <section
+      id="work"
+      className="px-4 md:px-8 pt-24 pb-28 relative"
+      style={{ background: 'var(--bg)' }}
+    >
+      <div className="max-w-[1500px] mx-auto">
 
-        {/* Section header */}
+        {/* Section masthead */}
+        <SectionMasthead
+          number="II"
+          label={lang === 'ru' ? 'РАЗДЕЛ II' : 'SECTION II'}
+          sub={lang === 'ru' ? 'РЕЕСТР' : 'LEDGER'}
+          sheet="002 / 005"
+          lang={lang}
+        />
+
+        {/* Big title + epigraph */}
         <motion.div
-          className="mb-20 flex flex-col sm:flex-row sm:items-end justify-between gap-4"
-          initial={{ opacity: 0, y: 24 }}
+          className="grid grid-cols-12 gap-x-4 gap-y-6 items-end mb-16 md:mb-24"
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.7, ease }}
+          transition={{ duration: 0.8, ease }}
         >
-          <div className="relative">
+          <h2
+            className="display col-span-12 md:col-span-8 fg"
+            style={{
+              fontSize: 'clamp(2.5rem, 7vw, 5.5rem)',
+              fontWeight: 500,
+              letterSpacing: '-0.035em',
+              lineHeight: 0.95,
+              fontVariationSettings: '"opsz" 144, "SOFT" 60, "WONK" 0',
+            }}
+          >
+            {work.title}<span style={{ color: 'var(--signal)' }}>.</span>
+          </h2>
+          <div
+            className="col-span-12 md:col-span-4 md:pl-6 md:border-l md:border-l-rule"
+            style={{ borderColor: 'var(--rule)' }}
+          >
             <span
-              className="absolute -top-6 -left-2 font-display font-extrabold select-none pointer-events-none"
+              className="block text-[10px] tracking-[0.2em] mb-3"
+              style={{ color: 'var(--signal)', fontFamily: 'var(--font-mono)' }}
+            >
+              ¶ {lang === 'ru' ? 'ЭПИГРАФ' : 'EPIGRAPH'}
+            </span>
+            <p
+              className="display-md italic fg-soft"
               style={{
-                fontSize: 'clamp(5rem, 12vw, 9rem)',
-                color: 'var(--accent)',
-                opacity: 0.06,
-                letterSpacing: '-0.05em',
-                lineHeight: 1,
+                fontSize: '1.25rem',
+                fontWeight: 400,
+                fontVariationSettings: '"opsz" 36, "SOFT" 50, "WONK" 1',
+                lineHeight: 1.3,
               }}
             >
-              {work.label}
-            </span>
-            <h2
-              className="font-display font-extrabold relative"
-              style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.5rem)', color: 'var(--text)' }}
-            >
-              {work.title}
-            </h2>
+              {work.quote}
+            </p>
           </div>
-          <p
-            className="text-sm italic max-w-xs text-right"
-            style={{ color: 'var(--text-muted)' }}
-          >
-            {work.quote}
-          </p>
         </motion.div>
 
-        {/* Timeline */}
-        <div className="relative">
-          {/* Vertical line */}
-          <div
-            className="absolute left-0 top-3 bottom-0 w-px hidden md:block"
-            style={{ background: `linear-gradient(to bottom, var(--accent), transparent)` }}
-          />
+        {/* Ledger — column header */}
+        <div
+          className="grid grid-cols-[60px_140px_1fr_auto] md:grid-cols-[80px_180px_1fr_auto] gap-x-6 pb-3 text-[10px] tracking-[0.2em] fg-mute"
+          style={{ fontFamily: 'var(--font-mono)', borderBottom: '1px solid var(--ink)' }}
+        >
+          <span>N°</span>
+          <span>{lang === 'ru' ? 'ПЕРИОД' : 'PERIOD'}</span>
+          <span>{lang === 'ru' ? 'ЗАПИСЬ' : 'ENTRY'}</span>
+          <span className="text-right">{lang === 'ru' ? 'ССЫЛКА' : 'REF.'}</span>
+        </div>
 
-          <div className="flex flex-col gap-16">
-            {work.items.map((item, i) => (
-              <motion.div
-                key={i}
-                className="md:pl-12 relative grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-10"
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.7, ease, delay: i * 0.1 }}
-              >
-                {/* Timeline dot */}
-                <div
-                  className="absolute left-0 top-2 w-2.5 h-2.5 rounded-full -translate-x-1 hidden md:block"
-                  style={{
-                    background: 'var(--accent)',
-                    boxShadow: '0 0 0 3px var(--bg), 0 0 0 5px var(--accent)',
-                    opacity: 0.8,
-                  }}
-                />
+        {/* Ledger entries */}
+        <div>
+          {work.items.map((item, i) => (
+            <LedgerRow key={i} item={item} index={i} lang={lang} />
+          ))}
+        </div>
 
-                {/* Meta */}
-                <div className="md:col-span-3">
-                  <p
-                    className="font-mono text-xs tracking-widest uppercase mb-1"
-                    style={{ color: 'var(--text-muted)' }}
-                  >
-                    {item.date}
-                  </p>
-                  <p
-                    className="text-sm font-bold"
-                    style={{ color: 'var(--accent)', fontFamily: 'Manrope, sans-serif' }}
-                  >
-                    {item.role}
-                  </p>
-                </div>
-
-                {/* Card */}
-                <div className="md:col-span-9">
-                  <TiltCard
-                    className="p-7 rounded-xl"
-                    style={{
-                      background: 'var(--bg-hi)',
-                      border: '1px solid var(--border)',
-                      borderLeft: `3px solid var(--accent)`,
-                    }}
-                  >
-                    <h3
-                      className="font-display font-bold text-xl mb-3"
-                      style={{ color: 'var(--text)' }}
-                    >
-                      {item.href ? (
-                        <a
-                          href={item.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="link-line"
-                        >
-                          {item.title}
-                        </a>
-                      ) : item.title}
-                    </h3>
-                    <p
-                      className="text-base leading-relaxed mb-5"
-                      style={{ color: 'var(--text-muted)', lineHeight: 1.75 }}
-                    >
-                      {item.body}
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {item.tags.map(tag => (
-                        <span
-                          key={tag}
-                          className="text-xs font-semibold px-3 py-1 rounded-full"
-                          style={{
-                            background: 'var(--bg-lo)',
-                            color: 'var(--text-muted)',
-                            fontFamily: 'Manrope, sans-serif',
-                          }}
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </TiltCard>
-                </div>
-
-              </motion.div>
-            ))}
-          </div>
+        {/* Closing rule */}
+        <div className="double-rule mt-2" />
+        <div className="mt-3 flex items-center justify-between text-[10px] tracking-[0.2em] fg-mute"
+             style={{ fontFamily: 'var(--font-mono)' }}>
+          <span>{lang === 'ru' ? 'КОНЕЦ РЕЕСТРА' : 'END OF LEDGER'}</span>
+          <span className="num-tabular">{lang === 'ru' ? 'ВСЕГО' : 'TOTAL'}: {String(work.items.length).padStart(2, '0')}</span>
         </div>
       </div>
     </section>
+  )
+}
+
+function LedgerRow({ item, index, lang }) {
+  const ref = useRef(null)
+
+  const onEnter = () => {
+    if (ref.current) animate(ref.current, { x: 8 }, { type: 'spring', stiffness: 280, damping: 26, mass: 0.5 })
+  }
+  const onLeave = () => {
+    if (ref.current) animate(ref.current, { x: 0 }, { type: 'spring', stiffness: 280, damping: 26, mass: 0.5 })
+  }
+
+  const Body = (
+    <motion.article
+      ref={ref}
+      className="group grid grid-cols-[60px_140px_1fr_auto] md:grid-cols-[80px_180px_1fr_auto] gap-x-6 py-7 relative"
+      style={{ borderBottom: '1px solid var(--rule)' }}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.7, ease, delay: index * 0.06 }}
+      onMouseEnter={onEnter}
+      onMouseLeave={onLeave}
+    >
+      {/* Hover background fill */}
+      <span
+        className="absolute inset-0 -mx-2 transition-opacity duration-500 opacity-0 group-hover:opacity-100 pointer-events-none"
+        style={{ background: 'var(--bg-hi)' }}
+        aria-hidden="true"
+      />
+
+      {/* N° */}
+      <span
+        className="relative num-tabular text-[12px] pt-1"
+        style={{
+          fontFamily: 'var(--font-mono)',
+          color: 'var(--signal)',
+          letterSpacing: '0.05em',
+        }}
+      >
+        {String(index + 1).padStart(3, '0')}
+      </span>
+
+      {/* PERIOD */}
+      <span
+        className="relative num-tabular text-[11px] pt-1.5 fg-mute tracking-[0.1em]"
+        style={{ fontFamily: 'var(--font-mono)' }}
+      >
+        {item.date.toUpperCase()}
+      </span>
+
+      {/* ENTRY */}
+      <div className="relative">
+        <div
+          className="text-[10px] tracking-[0.18em] mb-2"
+          style={{ color: 'var(--signal)', fontFamily: 'var(--font-mono)' }}
+        >
+          {item.role.toUpperCase()}
+        </div>
+        <h3
+          className="display-md fg mb-3"
+          style={{
+            fontSize: 'clamp(1.5rem, 2.6vw, 2.1rem)',
+            fontWeight: 500,
+            letterSpacing: '-0.02em',
+            lineHeight: 1.05,
+            fontVariationSettings: '"opsz" 60, "SOFT" 40, "WONK" 0',
+          }}
+        >
+          {item.title}
+        </h3>
+        <p
+          className="text-[15px] leading-[1.6] mb-4 fg-soft max-w-2xl"
+          style={{ fontFamily: 'var(--font-display)', fontWeight: 400, fontVariationSettings: '"opsz" 14, "SOFT" 0, "WONK" 0' }}
+        >
+          {item.body}
+        </p>
+        <div className="flex flex-wrap gap-2">
+          {item.tags.map((tag, ti) => (
+            <span
+              key={tag}
+              className="text-[10px] tracking-[0.16em] uppercase px-2 py-1"
+              style={{
+                fontFamily: 'var(--font-mono)',
+                color: 'var(--ink-soft)',
+                border: '1px solid var(--rule)',
+                background: ti === 0 ? 'transparent' : 'var(--bg-hi)',
+              }}
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* REF arrow */}
+      <span
+        className="relative pt-1 text-right text-[18px] transition-colors"
+        style={{ color: item.href ? 'var(--signal)' : 'var(--ink-faint)', fontFamily: 'var(--font-mono)' }}
+      >
+        {item.href ? '↗' : '·'}
+      </span>
+    </motion.article>
+  )
+
+  return item.href ? (
+    <a href={item.href} target="_blank" rel="noopener noreferrer" className="block">
+      {Body}
+    </a>
+  ) : Body
+}
+
+function SectionMasthead({ number, label, sub, sheet, lang }) {
+  return (
+    <div className="mb-16 md:mb-20">
+      <div className="flex items-center justify-between text-[10px] tracking-[0.18em] fg-mute mb-3"
+           style={{ fontFamily: 'var(--font-mono)' }}>
+        <span className="flex items-center gap-3">
+          <span style={{ color: 'var(--signal)' }}>◆</span>
+          <span>{label}</span>
+          <span style={{ opacity: 0.4 }}>—</span>
+          <span>{sub}</span>
+        </span>
+        <span className="flex items-center gap-3">
+          <span>{lang === 'ru' ? 'ЛИСТ' : 'SHEET'}</span>
+          <span className="num-tabular fg">{sheet}</span>
+        </span>
+      </div>
+      <div className="rule-h" />
+      <div className="rule-h mt-1" style={{ height: '0.5px' }} />
+    </div>
   )
 }

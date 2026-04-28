@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { useTheme } from './hooks/useTheme'
 import { content } from './data/content'
+import Cursor from './components/Cursor'
+import Masthead from './components/Masthead'
 import Nav from './components/Nav'
 import Hero from './components/sections/Hero'
 import MarqueeSection from './components/sections/Marquee'
@@ -17,16 +19,18 @@ export default function App() {
 
   return (
     <>
+      <Cursor />
       <div className="grain-overlay" aria-hidden="true" />
+      <Masthead lang={lang} />
       <Nav t={t} theme={theme} toggleTheme={toggleTheme} lang={lang} toggleLang={toggleLang} />
       <main>
-        <Hero t={t} />
-        <MarqueeSection items={t.stack} />
-        <Projects t={t} />
-        <Skills t={t} />
-        <Contact t={t} />
+        <Hero t={t} lang={lang} />
+        <MarqueeSection items={t.stack} lang={lang} />
+        <Projects t={t} lang={lang} />
+        <Skills t={t} lang={lang} />
+        <Contact t={t} lang={lang} />
       </main>
-      <Footer t={t} />
+      <Footer t={t} lang={lang} />
     </>
   )
 }

@@ -1,107 +1,176 @@
 @import "tailwindcss";
 
-/* ── Tailwind v4 custom tokens (use --font-* not --font-family-*) ── */
+/* ─────────────────────────────────────────────────────────────
+   BUREAU OF DATA × WEB · MMXXVI
+   Editorial broadsheet meets operations terminal.
+   ───────────────────────────────────────────────────────────── */
+
+/* Tailwind v4 custom tokens */
 @theme {
-  --font-display: 'Manrope', ui-sans-serif, system-ui, sans-serif;
-  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Code', 'Fira Code', monospace;
+  --font-display: 'Fraunces', 'Iowan Old Style', 'Charter', Georgia, serif;
+  --font-sans:    'Inter Tight', ui-sans-serif, system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', ui-monospace, 'Cascadia Code', monospace;
 }
 
-/* ── Semantic colour tokens ── */
+/* ── Semantic tokens ── */
 :root {
-  --bg:          #fafaf9;
-  --bg-hi:       #ffffff;
-  --bg-lo:       #f1f0ef;
-  --text:        #09090b;
-  --text-muted:  #71717a;
-  --border:      #e4e4e7;
-  --accent:      #d97706;
-  --accent-hi:   #f59e0b;
-  --nav-bg:      rgba(250, 250, 249, 0.82);
+  /* Surfaces — warm cream paper */
+  --bg:           #f3efe6;
+  --bg-hi:        #fbf8f0;
+  --bg-lo:        #ebe5d6;
+  --bg-ink:       #0c0b0a;
+
+  /* Ink */
+  --ink:          #0e0d0c;
+  --ink-soft:     #3a3631;
+  --ink-mute:     #807a70;
+  --ink-faint:    #b8b1a1;
+
+  /* Hairlines */
+  --rule:         #d6cfbe;
+  --rule-soft:    #e6dfcd;
+
+  /* Signal */
+  --signal:       #e23a13;   /* vermilion / press red */
+  --signal-deep:  #b32d0c;
+  --signal-glow:  rgba(226, 58, 19, 0.15);
+
+  /* Auxiliary indicator */
+  --indicator:    #1f6f3c;   /* operations green */
+
+  /* Nav surface */
+  --nav-bg:       rgba(243, 239, 230, 0.78);
+
+  /* Selection */
+  --select-bg:    #0e0d0c;
+  --select-fg:    #f3efe6;
 }
 
 .dark {
-  --bg:          #0a0a0b;
-  --bg-hi:       #18181b;
-  --bg-lo:       #111113;
-  --text:        #fafaf9;
-  --text-muted:  #a1a1aa;
-  --border:      #27272a;
-  --accent:      #f59e0b;
-  --accent-hi:   #fbbf24;
-  --nav-bg:      rgba(10, 10, 11, 0.82);
+  --bg:           #0c0b0a;
+  --bg-hi:        #16140f;
+  --bg-lo:        #08070a;
+  --bg-ink:       #08070a;
+
+  --ink:          #ebe5d6;
+  --ink-soft:     #c9c2b1;
+  --ink-mute:     #807a70;
+  --ink-faint:    #4a463e;
+
+  --rule:         #2c2922;
+  --rule-soft:    #1d1b16;
+
+  --signal:       #ff5a2c;
+  --signal-deep:  #ff7a4e;
+  --signal-glow:  rgba(255, 90, 44, 0.18);
+
+  --indicator:    #4ea974;
+
+  --nav-bg:       rgba(12, 11, 10, 0.78);
+
+  --select-bg:    #ebe5d6;
+  --select-fg:    #0c0b0a;
 }
 
-/* ── Tailwind custom utilities (theme-aware) ── */
+/* ── Tailwind utilities (theme-aware) ── */
 @layer utilities {
-  .bg-page       { background-color: var(--bg); }
-  .bg-surface    { background-color: var(--bg-hi); }
-  .bg-low        { background-color: var(--bg-lo); }
-  .fg            { color: var(--text); }
-  .fg-muted      { color: var(--text-muted); }
-  .fg-accent     { color: var(--accent); }
-  .bg-accent-ui  { background-color: var(--accent); }
-  .b-ui          { border-color: var(--border); }
-  .stroke-ui     { stroke: var(--border); }
+  .bg-page      { background-color: var(--bg); }
+  .bg-paper     { background-color: var(--bg-hi); }
+  .bg-recess    { background-color: var(--bg-lo); }
+  .bg-ink       { background-color: var(--bg-ink); }
+  .fg           { color: var(--ink); }
+  .fg-soft      { color: var(--ink-soft); }
+  .fg-mute      { color: var(--ink-mute); }
+  .fg-faint     { color: var(--ink-faint); }
+  .fg-signal    { color: var(--signal); }
+  .fg-indicator { color: var(--indicator); }
+  .border-rule  { border-color: var(--rule); }
+  .stroke-rule  { stroke: var(--rule); }
+  .ring-signal  { --tw-ring-color: var(--signal); }
+
+  /* Optical / typographic */
+  .num-tabular  { font-variant-numeric: tabular-nums; }
+  .num-old      { font-variant-numeric: oldstyle-nums proportional-nums; }
+  .ligs         { font-feature-settings: "liga" 1, "calt" 1, "ss01" 1; }
+  .smcp         { font-variant-caps: all-small-caps; letter-spacing: 0.08em; }
 }
 
-/* Tailwind v4 Preflight уже делает margin/padding/box-sizing reset.
-   Дублирующий "* { margin:0 }" здесь стоял ВНЕ @layer и побеждал
-   утилиты в @layer utilities — из-за этого ломались все py-*/px-*. */
-
+/* ─────────────────────────────────────────────────────────────
+   BASE
+   ───────────────────────────────────────────────────────────── */
 html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: geometricPrecision;
 }
 
 body {
   background-color: var(--bg);
-  color: var(--text);
+  color: var(--ink);
   font-family: var(--font-sans);
-  line-height: 1.65;
+  font-feature-settings: "ss01" 1, "cv11" 1, "calt" 1;
+  line-height: 1.55;
   overflow-x: hidden;
-  transition: background-color 0.25s ease, color 0.25s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-h1, h2, h3, h4 {
+/* Headings — Fraunces with optical / SOFT / WONK axes for character */
+h1, h2, h3, h4, .display {
   font-family: var(--font-display);
-  letter-spacing: -0.04em;
+  font-variation-settings: "opsz" 144, "SOFT" 50, "WONK" 0;
+  letter-spacing: -0.025em;
+  line-height: 0.96;
 }
+
+/* Smaller display sizes get tighter optical size */
+.display-md {
+  font-family: var(--font-display);
+  font-variation-settings: "opsz" 60, "SOFT" 40, "WONK" 0;
+}
+.display-sm {
+  font-family: var(--font-display);
+  font-variation-settings: "opsz" 24, "SOFT" 30, "WONK" 0;
+}
+
+/* Wonk axis for accent moments */
+.wonk { font-variation-settings: "opsz" 144, "SOFT" 100, "WONK" 1 !important; }
 
 /* ── Selection ── */
-::selection {
-  background-color: var(--accent);
-  color: #fff;
-}
+::selection { background-color: var(--select-bg); color: var(--select-fg); }
 
 /* ── Scrollbar ── */
-::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 2px;
+  background: var(--rule);
+  border-radius: 0;
 }
+::-webkit-scrollbar-thumb:hover { background: var(--ink-mute); }
 
 /* ── Focus ── */
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--signal);
   outline-offset: 3px;
-  border-radius: 2px;
+  border-radius: 0;
 }
 
-/* ── Grain overlay ── */
+/* ─────────────────────────────────────────────────────────────
+   GRAIN — keep as atmosphere
+   ───────────────────────────────────────────────────────────── */
 .grain-overlay {
   position: fixed;
   inset: -200%;
   width: 500%;
   height: 500%;
   pointer-events: none;
-  z-index: 9999;
-  opacity: 0.038;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  z-index: 9998;
+  opacity: 0.06;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   animation: grain-shift 8s steps(10) infinite;
 }
+.dark .grain-overlay { mix-blend-mode: screen; opacity: 0.045; }
 
 @keyframes grain-shift {
   0%   { transform: translate(0, 0); }
@@ -117,36 +186,116 @@ h1, h2, h3, h4 {
   100% { transform: translate(0, 0); }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .grain-overlay { animation: none; }
+/* ─────────────────────────────────────────────────────────────
+   SCANLINES — operations terminal layer (subtle)
+   ───────────────────────────────────────────────────────────── */
+.scanlines {
+  position: relative;
+}
+.scanlines::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 2px,
+    rgba(0, 0, 0, 0.025) 2px,
+    rgba(0, 0, 0, 0.025) 3px
+  );
+  mix-blend-mode: multiply;
+}
+.dark .scanlines::after {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 2px,
+    rgba(255, 255, 255, 0.025) 2px,
+    rgba(255, 255, 255, 0.025) 3px
+  );
+  mix-blend-mode: screen;
 }
 
-/* ── Marquee ── */
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
-@keyframes marquee-rev {
-  from { transform: translateX(-50%); }
-  to   { transform: translateX(0); }
-}
-
-.marquee-track     { animation: marquee     36s linear infinite; }
-.marquee-track-rev { animation: marquee-rev 36s linear infinite; }
-
-@media (prefers-reduced-motion: reduce) {
-  .marquee-track, .marquee-track-rev { animation-play-state: paused; }
+/* ─────────────────────────────────────────────────────────────
+   RULES — hairline dividers, used everywhere
+   ───────────────────────────────────────────────────────────── */
+.rule-h { height: 1px; background: var(--rule); }
+.rule-h-strong { height: 1px; background: var(--ink); }
+.rule-v { width: 1px; background: var(--rule); }
+.double-rule {
+  border-top: 1px solid var(--rule);
+  border-bottom: 3px double var(--rule);
+  height: 6px;
 }
 
-/* ── Skill row dots ── */
-.skill-dots {
-  flex: 1;
-  border-bottom: 2px dotted var(--border);
-  margin: 0 0.6rem;
-  margin-bottom: 0.2rem;
+/* Animated draw-in rule for scroll reveal */
+.rule-draw {
+  background: var(--rule);
+  height: 1px;
+  transform-origin: left center;
+  animation: rule-draw 1.2s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+@keyframes rule-draw {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
 }
 
-/* ── Hover underline ── */
+/* ─────────────────────────────────────────────────────────────
+   STATUS — blinking indicator
+   ───────────────────────────────────────────────────────────── */
+.blink {
+  animation: blink 1.6s steps(2, end) infinite;
+}
+@keyframes blink {
+  50% { opacity: 0; }
+}
+.pulse-dot {
+  position: relative;
+}
+.pulse-dot::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 9999px;
+  border: 1px solid currentColor;
+  opacity: 0;
+  animation: pulse-ring 2s ease-out infinite;
+}
+@keyframes pulse-ring {
+  0%   { transform: scale(0.6); opacity: 0.6; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   MARQUEE / TICKER
+   ───────────────────────────────────────────────────────────── */
+@keyframes marquee     { from { transform: translateX(0);    } to { transform: translateX(-50%); } }
+@keyframes marquee-rev { from { transform: translateX(-50%); } to { transform: translateX(0);    } }
+
+.marquee-track     { animation: marquee     48s linear infinite; }
+.marquee-track-rev { animation: marquee-rev 60s linear infinite; }
+.marquee-track:hover, .marquee-track-rev:hover { animation-play-state: paused; }
+
+/* ─────────────────────────────────────────────────────────────
+   PROFICIENCY BAR — terminal cells
+   ───────────────────────────────────────────────────────────── */
+.bar-cells {
+  display: inline-grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 2px;
+  width: 90px;
+}
+.bar-cell {
+  height: 8px;
+  background: var(--rule);
+}
+.bar-cell.on { background: var(--ink); }
+.bar-cell.signal { background: var(--signal); }
+
+/* ─────────────────────────────────────────────────────────────
+   LINKS
+   ───────────────────────────────────────────────────────────── */
 .link-line {
   position: relative;
   display: inline-block;
@@ -159,6 +308,154 @@ h1, h2, h3, h4 {
   width: 0;
   height: 1px;
   background: currentColor;
-  transition: width 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: width 0.45s cubic-bezier(0.65, 0, 0.35, 1);
 }
 .link-line:hover::after { width: 100%; }
+
+/* Editorial drop-cap */
+.dropcap::first-letter {
+  font-family: var(--font-display);
+  font-variation-settings: "opsz" 144, "SOFT" 60, "WONK" 1;
+  font-weight: 800;
+  font-size: 4em;
+  line-height: 0.85;
+  float: left;
+  margin: 0.05em 0.1em -0.05em 0;
+  color: var(--signal);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   DUOTONE PHOTO TREATMENT
+   ───────────────────────────────────────────────────────────── */
+.duotone {
+  position: relative;
+  isolation: isolate;
+}
+.duotone img {
+  filter: grayscale(1) contrast(1.05) brightness(1.0);
+}
+.duotone::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--bg-ink);
+  mix-blend-mode: lighten;
+  z-index: 1;
+}
+.duotone::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--signal);
+  mix-blend-mode: multiply;
+  z-index: 2;
+}
+.dark .duotone::before { background: var(--ink); mix-blend-mode: lighten; }
+.dark .duotone::after  { background: var(--signal); mix-blend-mode: darken; opacity: 0.7; }
+
+/* Halftone dot pattern overlay (for that printed look) */
+.halftone {
+  position: relative;
+}
+.halftone::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, currentColor 1px, transparent 1.2px);
+  background-size: 4px 4px;
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: 5;
+  color: var(--ink);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   KINETIC TYPE — role rotator
+   ───────────────────────────────────────────────────────────── */
+.role-stack {
+  display: inline-block;
+  height: 1em;
+  overflow: hidden;
+  vertical-align: bottom;
+  position: relative;
+}
+.role-stack span {
+  display: block;
+  animation: role-rotate 7s cubic-bezier(0.76, 0, 0.24, 1) infinite;
+}
+@keyframes role-rotate {
+  0%, 40%   { transform: translateY(0%); }
+  50%, 90%  { transform: translateY(-100%); }
+  100%      { transform: translateY(-200%); }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   CUSTOM CURSOR
+   ───────────────────────────────────────────────────────────── */
+@media (hover: hover) and (pointer: fine) {
+  body { cursor: none; }
+  a, button, [role="button"], label, input, textarea, select { cursor: none; }
+
+  .cursor-dot {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 6px;
+    height: 6px;
+    border-radius: 9999px;
+    background: var(--signal);
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.15s cubic-bezier(0.22, 1, 0.36, 1), width 0.18s ease, height 0.18s ease;
+    will-change: transform;
+  }
+  .cursor-ring {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--ink);
+    border-radius: 9999px;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), width 0.22s ease, height 0.22s ease, border-color 0.2s ease;
+    will-change: transform;
+    mix-blend-mode: difference;
+  }
+  .cursor-ring.is-hover {
+    width: 56px;
+    height: 56px;
+    border-color: var(--signal);
+  }
+  .cursor-ring.is-text {
+    width: 4px;
+    height: 22px;
+    border-radius: 0;
+    background: var(--ink);
+    border: 0;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   REDUCED MOTION
+   ───────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .grain-overlay { animation: none; }
+  .marquee-track, .marquee-track-rev { animation-play-state: paused; }
+  .blink, .pulse-dot::after { animation: none; }
+  .role-stack span { animation: none; }
+  .rule-draw { animation: none; transform: scaleX(1); }
+  html { scroll-behavior: auto; }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   PRINT — actually look good when printed
+   ───────────────────────────────────────────────────────────── */
+@media print {
+  .grain-overlay, .scanlines::after, .cursor-dot, .cursor-ring { display: none !important; }
+  body { background: white; color: black; }
+  a { color: black; text-decoration: underline; }
+}

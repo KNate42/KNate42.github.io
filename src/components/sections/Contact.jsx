@@ -3,13 +3,13 @@ import { motion, animate } from 'framer-motion'
 
 const ease = [0.22, 1, 0.36, 1]
 
-function MagneticLink({ href, children, target }) {
+function MagneticLink({ href, children, target, className, style }) {
   const ref = useRef(null)
 
   const onMove = (e) => {
     const rect = ref.current.getBoundingClientRect()
-    const dx = (e.clientX - (rect.left + rect.width / 2)) * 0.22
-    const dy = (e.clientY - (rect.top + rect.height / 2)) * 0.22
+    const dx = (e.clientX - (rect.left + rect.width / 2)) * 0.18
+    const dy = (e.clientY - (rect.top + rect.height / 2)) * 0.18
     animate(ref.current, { x: dx, y: dy }, { type: 'spring', stiffness: 180, damping: 18, mass: 0.4 })
   }
 
@@ -25,175 +25,323 @@ function MagneticLink({ href, children, target }) {
       rel={target === '_blank' ? 'noopener noreferrer' : undefined}
       onMouseMove={onMove}
       onMouseLeave={onLeave}
-      className="inline-block"
+      className={`inline-block ${className || ''}`}
+      style={style}
     >
       {children}
     </motion.a>
   )
 }
 
-function ContactLink({ link }) {
-  const icons = {
-    email:    <EmailIcon />,
-    github:   <GithubIcon />,
-    telegram: <TelegramIcon />,
-    linkedin: <LinkedinIcon />,
-  }
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, x: -16 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, ease }}
-    >
-      <a
-        href={link.href}
-        target={link.kind !== 'email' ? '_blank' : undefined}
-        rel={link.kind !== 'email' ? 'noopener noreferrer' : undefined}
-        className="flex items-center gap-4 group"
-      >
-        <span
-          className="w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-200"
-          style={{
-            background: 'rgba(255,255,255,0.08)',
-            color: 'rgba(255,255,255,0.6)',
-          }}
-        >
-          {icons[link.kind]}
-        </span>
-        <span
-          className="link-line text-base font-medium"
-          style={{ color: 'rgba(255,255,255,0.75)', fontFamily: 'Manrope, sans-serif' }}
-        >
-          {link.label}
-        </span>
-      </a>
-    </motion.div>
-  )
-}
-
-export default function Contact({ t }) {
+export default function Contact({ t, lang }) {
   const { contact } = t
 
   return (
     <section
       id="contact"
-      className="py-28 px-6 md:px-10 lg:px-16"
-      style={{ background: '#0a0a0b', color: '#fafaf9' }}
+      className="px-4 md:px-8 pt-24 pb-24 relative scanlines"
+      style={{ background: 'var(--bg-ink)', color: 'var(--bg)' }}
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-[1500px] mx-auto">
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+        {/* Section masthead */}
+        <SectionMasthead
+          label={lang === 'ru' ? 'РАЗДЕЛ IV' : 'SECTION IV'}
+          sub={lang === 'ru' ? 'СВЯЗЬ' : 'DISPATCH'}
+          sheet="004 / 005"
+          lang={lang}
+          inverted
+        />
 
-          {/* Left: Heading + email CTA */}
-          <div>
-            <motion.span
-              className="block text-xs font-mono tracking-widest uppercase mb-10"
-              style={{ color: 'var(--accent)', letterSpacing: '0.18em' }}
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, ease }}
-            >
-              {contact.label}
-            </motion.span>
+        {/* Display heading */}
+        <motion.h2
+          className="display mb-16 md:mb-20"
+          style={{
+            fontSize: 'clamp(2.5rem, 8vw, 6.2rem)',
+            fontWeight: 500,
+            letterSpacing: '-0.04em',
+            lineHeight: 0.95,
+            color: 'var(--bg)',
+            fontVariationSettings: '"opsz" 144, "SOFT" 70, "WONK" 0',
+          }}
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 0.85, ease }}
+        >
+          <span>{contact.heading[0]} </span>
+          <span
+            className="italic"
+            style={{
+              color: 'var(--signal)',
+              fontVariationSettings: '"opsz" 144, "SOFT" 100, "WONK" 1',
+            }}
+          >
+            {contact.heading[1]}
+          </span>
+          <span> {contact.heading[2]}</span>
+        </motion.h2>
 
-            <motion.h2
-              className="font-display font-extrabold mb-10 leading-tight"
+        {/* Dispatch card grid */}
+        <div className="grid grid-cols-12 gap-x-6 gap-y-10">
+
+          {/* LEFT — dispatch slip */}
+          <motion.div
+            className="col-span-12 lg:col-span-7 relative"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.7, ease, delay: 0.1 }}
+          >
+            <div
+              className="p-6 md:p-10 relative"
               style={{
-                fontSize: 'clamp(2rem, 4.5vw, 3.5rem)',
-                letterSpacing: '-0.04em',
-                color: '#fafaf9',
+                border: '1px solid rgba(255,255,255,0.18)',
+                background: 'rgba(255,255,255,0.025)',
               }}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, ease, delay: 0.05 }}
             >
-              {contact.heading[0]}{' '}
-              <span style={{ color: 'var(--accent)' }}>{contact.heading[1]}</span>
-              {' '}{contact.heading[2]}
-            </motion.h2>
-
-            <motion.p
-              className="text-lg leading-relaxed mb-12 max-w-md"
-              style={{ color: 'rgba(255,255,255,0.5)', lineHeight: 1.75 }}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, ease, delay: 0.12 }}
-            >
-              {contact.sub}
-            </motion.p>
-
-            {/* Big email magnetic link */}
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, ease, delay: 0.2 }}
-            >
-              <MagneticLink href="mailto:anfinogentov@arizona.edu">
+              {/* Slip header — DISPATCH FORM */}
+              <div
+                className="flex items-baseline justify-between mb-8 pb-3"
+                style={{ borderBottom: '1px solid rgba(255,255,255,0.18)' }}
+              >
                 <span
-                  className="font-display font-extrabold block leading-none"
+                  className="text-[10px] tracking-[0.22em]"
+                  style={{ fontFamily: 'var(--font-mono)', color: 'var(--signal)' }}
+                >
+                  ✦ {lang === 'ru' ? 'БЛАНК ОТПРАВКИ' : 'DISPATCH FORM'}
+                </span>
+                <span
+                  className="text-[10px] tracking-[0.16em] num-tabular"
+                  style={{ fontFamily: 'var(--font-mono)', color: 'rgba(255,255,255,0.55)' }}
+                >
+                  N°{String(Math.floor(Math.random() * 900) + 100).padStart(3, '0')} / 2026
+                </span>
+              </div>
+
+              {/* Slip rows */}
+              <dl className="space-y-4 text-[12px]"
+                  style={{ fontFamily: 'var(--font-mono)', letterSpacing: '0.04em' }}>
+                <SlipRow k={lang === 'ru' ? 'ОТ' : 'FROM'} v="N. ANFINOGENTOV · TUCSON, AZ" />
+                <SlipRow k={lang === 'ru' ? 'КОМУ' : 'TO'} v={lang === 'ru' ? 'ВАМ — ЧИТАТЕЛЬ ЭТОГО ЛИСТА' : 'YOU — READER OF THIS SHEET'} />
+                <SlipRow k={lang === 'ru' ? 'ТЕМА' : 'RE'} v={lang === 'ru' ? 'СОТРУДНИЧЕСТВО / СТАЖИРОВКА' : 'COLLABORATION / INTERNSHIP'} />
+                <SlipRow k={lang === 'ru' ? 'ДАТА' : 'DATE'} v="2026.04 — ONGOING" mono />
+                <SlipRow k={lang === 'ru' ? 'ЯЗЫК' : 'LANG'} v="EN / RU" />
+              </dl>
+
+              <div
+                className="my-8 h-px"
+                style={{ background: 'rgba(255,255,255,0.18)' }}
+              />
+
+              {/* Body */}
+              <p
+                className="text-[16px] leading-[1.65] mb-10"
+                style={{
+                  color: 'rgba(255,255,255,0.78)',
+                  fontFamily: 'var(--font-display)',
+                  fontWeight: 400,
+                  fontVariationSettings: '"opsz" 14, "SOFT" 0, "WONK" 0',
+                }}
+              >
+                {contact.sub}
+              </p>
+
+              {/* The big email */}
+              <MagneticLink href="mailto:anfinogentov@arizona.edu" className="block">
+                <span
+                  className="display-md block"
                   style={{
-                    fontSize: 'clamp(1rem, 2.4vw, 1.6rem)',
-                    color: 'var(--accent)',
-                    letterSpacing: '-0.03em',
+                    fontSize: 'clamp(1.4rem, 3vw, 2.4rem)',
+                    fontWeight: 500,
+                    color: 'var(--signal)',
+                    letterSpacing: '-0.02em',
+                    fontVariationSettings: '"opsz" 60, "SOFT" 60, "WONK" 0',
                     textDecoration: 'underline',
-                    textDecorationColor: 'rgba(249,115,22,0.3)',
-                    textUnderlineOffset: '4px',
+                    textDecorationThickness: '1px',
+                    textUnderlineOffset: '6px',
+                    textDecorationColor: 'rgba(255, 90, 44, 0.5)',
                   }}
                 >
                   anfinogentov@arizona.edu
                 </span>
               </MagneticLink>
-            </motion.div>
-          </div>
 
-          {/* Right: All links */}
-          <div className="flex flex-col gap-5 lg:pt-24">
-            {contact.links.map(link => (
-              <ContactLink key={link.href} link={link} />
-            ))}
-          </div>
+              {/* Sign-off / fake signature */}
+              <div className="mt-10 flex items-end justify-between">
+                <div>
+                  <div
+                    className="text-[10px] tracking-[0.2em] mb-2"
+                    style={{ fontFamily: 'var(--font-mono)', color: 'rgba(255,255,255,0.5)' }}
+                  >
+                    {lang === 'ru' ? 'ПОДПИСЬ' : 'SIGNED'}
+                  </div>
+                  <div
+                    className="display-sm italic"
+                    style={{
+                      fontSize: '1.5rem',
+                      color: 'var(--bg)',
+                      fontWeight: 400,
+                      fontVariationSettings: '"opsz" 36, "SOFT" 100, "WONK" 1',
+                    }}
+                  >
+                    Никита А.
+                  </div>
+                </div>
+                {/* Stamp */}
+                <div
+                  className="hidden sm:flex flex-col items-center justify-center px-4 py-3 rotate-[-6deg]"
+                  style={{
+                    border: '2px solid var(--signal)',
+                    color: 'var(--signal)',
+                  }}
+                >
+                  <div className="text-[8px] tracking-[0.2em]" style={{ fontFamily: 'var(--font-mono)' }}>
+                    {lang === 'ru' ? 'ПОДЛИННО' : 'AUTHENTIC'}
+                  </div>
+                  <div className="text-[10px] tracking-[0.2em] num-tabular" style={{ fontFamily: 'var(--font-mono)' }}>
+                    MMXXVI
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
 
+          {/* RIGHT — channels list */}
+          <motion.div
+            className="col-span-12 lg:col-span-5 lg:pl-2"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.7, ease, delay: 0.18 }}
+          >
+            <div
+              className="text-[10px] tracking-[0.22em] mb-5 pb-2"
+              style={{
+                fontFamily: 'var(--font-mono)',
+                color: 'rgba(255,255,255,0.55)',
+                borderBottom: '1px solid rgba(255,255,255,0.18)',
+              }}
+            >
+              <span style={{ color: 'var(--signal)' }}>◆</span> {lang === 'ru' ? 'КАНАЛЫ СВЯЗИ' : 'CHANNELS'} · 04
+            </div>
+
+            <ul>
+              {contact.links.map((link, i) => (
+                <ChannelRow key={link.href} link={link} index={i} />
+              ))}
+            </ul>
+
+            {/* Spec footer */}
+            <div className="mt-10 grid grid-cols-2 gap-6 text-[10px] tracking-[0.18em]"
+                 style={{ fontFamily: 'var(--font-mono)', color: 'rgba(255,255,255,0.55)' }}>
+              <div>
+                <div className="mb-1" style={{ color: 'var(--signal)' }}>{lang === 'ru' ? 'ОТВЕТ В' : 'REPLY IN'}</div>
+                <div style={{ color: 'rgba(255,255,255,0.85)' }}>≤ 24h</div>
+              </div>
+              <div>
+                <div className="mb-1" style={{ color: 'var(--signal)' }}>{lang === 'ru' ? 'ЧАСОВОЙ ПОЯС' : 'TIMEZONE'}</div>
+                <div style={{ color: 'rgba(255,255,255,0.85)' }}>MST · UTC-7</div>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>
   )
 }
 
-function EmailIcon() {
+function SlipRow({ k, v, mono }) {
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="2" y="4" width="20" height="16" rx="2"/>
-      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
-    </svg>
+    <div className="grid grid-cols-[80px_1fr] gap-4 items-baseline">
+      <dt style={{ color: 'rgba(255,255,255,0.5)' }}>{k}</dt>
+      <dd
+        className="num-tabular pb-1"
+        style={{
+          color: 'rgba(255,255,255,0.92)',
+          borderBottom: '1px dotted rgba(255,255,255,0.25)',
+          letterSpacing: mono ? '0.06em' : '0.02em',
+        }}
+      >
+        {v}
+      </dd>
+    </div>
   )
 }
 
-function GithubIcon() {
+function ChannelRow({ link, index }) {
+  const codes = { email: 'EML', github: 'GIT', telegram: 'TGM', linkedin: 'LIN' }
+
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
-    </svg>
+    <motion.li
+      initial={{ opacity: 0, x: -12 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true, amount: 0.5 }}
+      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.08 * index }}
+      style={{ borderBottom: '1px solid rgba(255,255,255,0.12)' }}
+      className="group"
+    >
+      <a
+        href={link.href}
+        target={link.kind !== 'email' ? '_blank' : undefined}
+        rel={link.kind !== 'email' ? 'noopener noreferrer' : undefined}
+        className="grid grid-cols-[44px_60px_1fr_24px] items-center gap-3 py-4"
+      >
+        <span
+          className="text-[10px] tracking-[0.18em] num-tabular"
+          style={{ fontFamily: 'var(--font-mono)', color: 'rgba(255,255,255,0.45)' }}
+        >
+          {String(index + 1).padStart(2, '0')}
+        </span>
+        <span
+          className="text-[10px] tracking-[0.18em]"
+          style={{ fontFamily: 'var(--font-mono)', color: 'var(--signal)' }}
+        >
+          {codes[link.kind]}
+        </span>
+        <span
+          className="link-line text-[14px] truncate"
+          style={{
+            fontFamily: 'var(--font-display)',
+            fontWeight: 500,
+            fontVariationSettings: '"opsz" 14, "SOFT" 30, "WONK" 0',
+            color: 'rgba(255,255,255,0.92)',
+          }}
+        >
+          {link.label}
+        </span>
+        <span
+          className="text-right transition-transform duration-300 group-hover:translate-x-1"
+          style={{ color: 'var(--signal)', fontFamily: 'var(--font-mono)' }}
+        >
+          ↗
+        </span>
+      </a>
+    </motion.li>
   )
 }
 
-function TelegramIcon() {
+function SectionMasthead({ label, sub, sheet, lang, inverted }) {
+  const muted = inverted ? 'rgba(255,255,255,0.55)' : 'var(--ink-mute)'
+  const fg = inverted ? 'var(--bg)' : 'var(--ink)'
+  const rule = inverted ? 'rgba(255,255,255,0.18)' : 'var(--rule)'
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
-    </svg>
-  )
-}
-
-function LinkedinIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-    </svg>
+    <div className="mb-14">
+      <div className="flex items-center justify-between text-[10px] tracking-[0.18em] mb-3"
+           style={{ fontFamily: 'var(--font-mono)', color: muted }}>
+        <span className="flex items-center gap-3">
+          <span style={{ color: 'var(--signal)' }}>◆</span>
+          <span>{label}</span>
+          <span style={{ opacity: 0.4 }}>—</span>
+          <span>{sub}</span>
+        </span>
+        <span className="flex items-center gap-3">
+          <span>{lang === 'ru' ? 'ЛИСТ' : 'SHEET'}</span>
+          <span className="num-tabular" style={{ color: fg }}>{sheet}</span>
+        </span>
+      </div>
+      <div style={{ height: '1px', background: rule }} />
+      <div style={{ height: '0.5px', marginTop: '4px', background: rule }} />
+    </div>
   )
 }

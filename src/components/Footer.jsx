@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 
-function TucsonClock() {
-  const [time, setTime] = useState('')
+function TucsonClock({ lang }) {
+  const [time, setTime] = useState('--:--:--')
 
   useEffect(() => {
     const update = () => {
@@ -10,6 +10,7 @@ function TucsonClock() {
           timeZone: 'America/Phoenix',
           hour: '2-digit',
           minute: '2-digit',
+          second: '2-digit',
           hour12: false,
         })
       )
@@ -20,53 +21,149 @@ function TucsonClock() {
   }, [])
 
   return (
-    <span className="font-mono text-xs" style={{ color: 'var(--text-muted)' }}>
-      Tucson, AZ &nbsp;{time}
+    <span className="num-tabular" style={{ fontFamily: 'var(--font-mono)' }}>
+      {lang === 'ru' ? 'ТУСОН, ШТ. АРИЗОНА' : 'TUCSON, AZ'} &nbsp;·&nbsp; {time} MST
     </span>
   )
 }
 
-export default function Footer({ t }) {
+export default function Footer({ t, lang }) {
   return (
     <footer
-      className="px-6 md:px-10 lg:px-16 py-10"
+      className="px-4 md:px-8 pt-16 pb-10 relative"
       style={{
-        borderTop: '1px solid var(--border)',
         background: 'var(--bg)',
+        borderTop: '1px solid var(--ink)',
       }}
     >
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+      <div className="max-w-[1500px] mx-auto">
 
-        <span
-          className="font-display font-extrabold tracking-tighter"
-          style={{ color: 'var(--text)', fontSize: '1rem', letterSpacing: '-0.04em' }}
+        {/* Section masthead */}
+        <div className="flex items-center justify-between text-[10px] tracking-[0.18em] fg-mute mb-3"
+             style={{ fontFamily: 'var(--font-mono)' }}>
+          <span className="flex items-center gap-3">
+            <span style={{ color: 'var(--signal)' }}>◆</span>
+            <span>{lang === 'ru' ? 'РАЗДЕЛ V' : 'SECTION V'}</span>
+            <span style={{ opacity: 0.4 }}>—</span>
+            <span>{lang === 'ru' ? 'КОЛОФОН' : 'COLOPHON'}</span>
+          </span>
+          <span className="flex items-center gap-3">
+            <span>{lang === 'ru' ? 'ЛИСТ' : 'SHEET'}</span>
+            <span className="num-tabular fg">005 / 005</span>
+          </span>
+        </div>
+        <div className="rule-h" />
+        <div className="rule-h mt-1" style={{ height: '0.5px' }} />
+
+        {/* Mega wordmark */}
+        <div
+          className="display fg my-12 md:my-16"
+          style={{
+            fontSize: 'clamp(3rem, 14vw, 11rem)',
+            fontWeight: 500,
+            letterSpacing: '-0.045em',
+            lineHeight: 0.88,
+            fontVariationSettings: '"opsz" 144, "SOFT" 70, "WONK" 0',
+          }}
         >
-          Nikita Anfinogentov
-        </span>
-
-        <TucsonClock />
-
-        <div className="flex items-center gap-1">
-          <p className="text-xs mr-4" style={{ color: 'var(--text-muted)' }}>
-            {t.footer.copy}
-          </p>
-          <div className="flex items-center gap-5">
-            {t.footer.links.map(link => (
-              <a
-                key={link.href}
-                href={link.href}
-                target={!link.href.startsWith('mailto') ? '_blank' : undefined}
-                rel={!link.href.startsWith('mailto') ? 'noopener noreferrer' : undefined}
-                className="link-line text-xs font-medium"
-                style={{ color: 'var(--text-muted)', fontFamily: 'Manrope, sans-serif' }}
-              >
-                {link.label}
-              </a>
-            ))}
-          </div>
+          <span>Anfinogentov</span>
+          <span style={{ color: 'var(--signal)' }}>.</span>
         </div>
 
+        {/* Colophon grid */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10 mb-12 pt-6"
+             style={{ borderTop: '1px solid var(--rule)' }}>
+          <ColophonCol
+            heading={lang === 'ru' ? 'НАБОР' : 'TYPESET IN'}
+            lines={['Fraunces · Display', 'Inter Tight · Sans', 'JetBrains Mono · Data']}
+          />
+          <ColophonCol
+            heading={lang === 'ru' ? 'ПОСТРОЕНО' : 'BUILT WITH'}
+            lines={['React 19', 'Vite 8 · Tailwind 4', 'Framer Motion 12']}
+          />
+          <ColophonCol
+            heading={lang === 'ru' ? 'ОПУБЛИКОВАНО' : 'PUBLISHED'}
+            lines={['knate42.github.io', 'GitHub Pages', 'Edition · MMXXVI']}
+          />
+          <ColophonCol
+            heading={lang === 'ru' ? 'СВЯЗАТЬСЯ' : 'CORRESPOND'}
+            lines={t.footer.links.map(l => l.label)}
+            hrefs={t.footer.links.map(l => l.href)}
+          />
+        </div>
+
+        {/* Bottom strip */}
+        <div className="rule-h mb-4" />
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 text-[10px] tracking-[0.16em] fg-mute"
+             style={{ fontFamily: 'var(--font-mono)' }}>
+          <span>{t.footer.copy.toUpperCase()}</span>
+          <TucsonClock lang={lang} />
+          <span className="flex items-center gap-2">
+            <span
+              className="w-1.5 h-1.5 rounded-full blink"
+              style={{ background: 'var(--indicator)' }}
+            />
+            <span>{lang === 'ru' ? 'СИСТЕМЫ В НОРМЕ' : 'ALL SYSTEMS NOMINAL'}</span>
+          </span>
+        </div>
+
+        {/* Big edition mark */}
+        <div className="mt-8 flex items-baseline justify-between">
+          <span
+            className="text-[10px] tracking-[0.2em] fg-faint"
+            style={{ fontFamily: 'var(--font-mono)' }}
+          >
+            — {lang === 'ru' ? 'КОНЕЦ ДОКУМЕНТА' : 'END OF DOCUMENT'} —
+          </span>
+          <span
+            className="display italic fg-faint"
+            style={{
+              fontSize: '1.5rem',
+              fontWeight: 400,
+              fontVariationSettings: '"opsz" 36, "SOFT" 100, "WONK" 1',
+            }}
+          >
+            №&nbsp;04 · MMXXVI
+          </span>
+        </div>
       </div>
     </footer>
+  )
+}
+
+function ColophonCol({ heading, lines, hrefs }) {
+  return (
+    <div>
+      <h4
+        className="text-[10px] tracking-[0.22em] mb-3"
+        style={{ fontFamily: 'var(--font-mono)', color: 'var(--signal)' }}
+      >
+        {heading}
+      </h4>
+      <ul className="space-y-1.5">
+        {lines.map((line, i) => (
+          <li
+            key={i}
+            className="text-[12px] fg-soft"
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontVariationSettings: '"opsz" 14, "SOFT" 30, "WONK" 0',
+              fontWeight: 500,
+            }}
+          >
+            {hrefs && hrefs[i] ? (
+              <a
+                href={hrefs[i]}
+                className="link-line"
+                target={hrefs[i].startsWith('mailto') ? undefined : '_blank'}
+                rel="noopener noreferrer"
+              >
+                {line}
+              </a>
+            ) : line}
+          </li>
+        ))}
+      </ul>
+    </div>
   )
 }
