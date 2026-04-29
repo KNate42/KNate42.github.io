@@ -275,6 +275,7 @@ export default function Hero({ t, lang }) {
               style={{
                 aspectRatio: '3/4',
                 background: 'var(--bg-lo)',
+                borderRadius: '6px',
               }}
             >
               <img
