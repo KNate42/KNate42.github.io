@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 
 // the very thin black strip at the top of the page — pretends to be
 // the masthead of a printed broadsheet. all metadata, no buttons.
-// time updates every second (Phoenix doesn't observe DST so it's fine
-// to hardcode the IANA zone).
+// time updates every second (Asia/Almaty, no DST since 2005,
+// so the offset is stable at +05).
 export default function Masthead({ lang }) {
   const [stamp, setStamp] = useState(stampNow())
 
@@ -12,20 +12,20 @@ export default function Masthead({ lang }) {
     return () => clearInterval(id)
   }, [])
 
-  // localized labels. coordinates point at U of A campus, roughly.
+  // localized labels. coordinates point at NKU (Pushkin 86Б, Petropavlovsk).
   const items = lang === 'ru'
     ? [
         ['ВЫПУСК', 'N° 04'],
         ['ГОД',    'MMXXVI'],
         ['БЮРО',   'ДАННЫЕ × ВЕБ'],
-        ['МЕСТО',  '32.22°N · 110.97°W'],
+        ['МЕСТО',  '54.87°N · 69.15°E'],
         ['ВРЕМЯ',  stamp],
       ]
     : [
         ['EDITION',  'N° 04'],
         ['YEAR',     'MMXXVI'],
         ['BUREAU',   'DATA × WEB'],
-        ['LOCATION', '32.22°N · 110.97°W'],
+        ['LOCATION', '54.87°N · 69.15°E'],
         ['TIME',     stamp],
       ]
 
@@ -66,16 +66,16 @@ export default function Masthead({ lang }) {
   )
 }
 
-// HH:MM:SS in Tucson time. America/Phoenix doesn't DST,
-// so the offset never shifts — easier than computing it by hand.
+// HH:MM:SS in Petropavlovsk time. Kazakhstan unified to UTC+5 in
+// March 2024 and doesn't observe DST, so the offset never shifts.
 function stampNow() {
   const d = new Date()
   const t = d.toLocaleTimeString('en-US', {
-    timeZone: 'America/Phoenix',
+    timeZone: 'Asia/Almaty',
     hour:   '2-digit',
     minute: '2-digit',
     second: '2-digit',
     hour12: false,
   })
-  return `${t} MST`
+  return `${t} +05`
 }

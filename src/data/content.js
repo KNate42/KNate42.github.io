@@ -20,7 +20,7 @@ export const content = {
       // the third visible span in Hero.jsx is a duplicate of [0]
       // so the loop wraps cleanly. don't add a 3rd here.
       roles: ['Data Scientist', 'Web Developer'],
-      location: 'University of Arizona · Tucson, AZ',
+      location: 'NKU · Petropavlovsk, Kazakhstan',
       bio: 'I work at the intersection of data and the web — visualising insights, learning ML, building functional interfaces.',
       cta: 'Get in Touch',
       ctaSecondary: 'View GitHub',
@@ -137,7 +137,7 @@ export const content = {
       // cleaner here than the russian equivalent, and matches how I'd
       // actually introduce myself
       roles: ['Data Scientist', 'Веб-разработчик'],
-      location: 'Университет Аризоны · Тусон, США',
+      location: 'СКУ · Петропавловск, Казахстан',
       bio: 'Работаю на стыке данных и веба — визуализирую инсайты, изучаю ML, строю функциональные интерфейсы.',
       cta: 'Написать',
       ctaSecondary: 'GitHub',

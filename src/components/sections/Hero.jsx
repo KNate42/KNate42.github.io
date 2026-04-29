@@ -23,13 +23,13 @@ export default function Hero({ t, lang }) {
   const photoOpacity = useTransform(scrollYProgress, [0, 0.85], [1, 0.3])
   const titleY       = useTransform(scrollYProgress, [0, 1],    ['0%', '-25%'])
 
-  // little stat ledger under the photo. lat/long are Tucson, AZ.
-  // status flips wording with the language toggle.
+  // little stat ledger under the photo. lat/long point at NKU
+  // (Pushkin 86B, Petropavlovsk, KZ). status flips with the lang toggle.
   const stats = [
     ['LANG',     lang === 'ru' ? 'EN/RU' : 'EN/RU'],
     ['STACK',    'PY · JS · SQL'],
-    ['LAT',      '32.22°N'],
-    ['LONG',     '110.97°W'],
+    ['LAT',      '54.87°N'],
+    ['LONG',     '69.15°E'],
     ['STATUS',   lang === 'ru' ? 'СВОБОДЕН' : 'AVAILABLE'],
   ]
 

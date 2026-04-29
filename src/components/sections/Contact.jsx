@@ -135,7 +135,7 @@ export default function Contact({ t, lang }) {
               {/* form fields, pretending to be a real dispatch slip */}
               <dl className="space-y-4 text-[12px]"
                   style={{ fontFamily: 'var(--font-mono)', letterSpacing: '0.04em' }}>
-                <SlipRow k={lang === 'ru' ? 'ОТ'   : 'FROM'} v="N. ANFINOGENTOV · TUCSON, AZ" />
+                <SlipRow k={lang === 'ru' ? 'ОТ'   : 'FROM'} v="N. ANFINOGENTOV · PETROPAVLOVSK, KZ" />
                 <SlipRow k={lang === 'ru' ? 'КОМУ' : 'TO'}   v={lang === 'ru' ? 'ВАМ — ЧИТАТЕЛЬ ЭТОГО ЛИСТА' : 'YOU — READER OF THIS SHEET'} />
                 <SlipRow k={lang === 'ru' ? 'ТЕМА' : 'RE'}   v={lang === 'ru' ? 'СОТРУДНИЧЕСТВО / СТАЖИРОВКА' : 'COLLABORATION / INTERNSHIP'} />
                 <SlipRow k={lang === 'ru' ? 'ДАТА' : 'DATE'} v="2026.04 — ONGOING" mono />
@@ -250,7 +250,7 @@ export default function Contact({ t, lang }) {
             </ul>
 
             {/* footer of the channels card — reply window + tz.
-                tz is hardcoded MST because Phoenix doesn't DST */}
+                tz is hardcoded +05 (Asia/Almaty), no DST in Kazakhstan */}
             <div className="mt-10 grid grid-cols-2 gap-6 text-[10px] tracking-[0.18em]"
                  style={{ fontFamily: 'var(--font-mono)', color: 'rgba(255,255,255,0.55)' }}>
               <div>
@@ -259,7 +259,7 @@ export default function Contact({ t, lang }) {
               </div>
               <div>
                 <div className="mb-1" style={{ color: 'var(--signal)' }}>{lang === 'ru' ? 'ЧАСОВОЙ ПОЯС' : 'TIMEZONE'}</div>
-                <div style={{ color: 'rgba(255,255,255,0.85)' }}>MST · UTC-7</div>
+                <div style={{ color: 'rgba(255,255,255,0.85)' }}>+05 · UTC+5</div>
               </div>
             </div>
           </motion.div>

@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react'
 
-// live local clock pinned to Tucson (Phoenix tz, no DST).
+// live local clock pinned to Petropavlovsk (Asia/Almaty, no DST).
 // runs at 1 Hz which is overkill for seconds, but the second hand
 // is half the charm so I left it.
-function TucsonClock({ lang }) {
+function LocalClock({ lang }) {
   const [time, setTime] = useState('--:--:--')
 
   useEffect(() => {
     const update = () => {
       setTime(
         new Date().toLocaleTimeString('en-US', {
-          timeZone: 'America/Phoenix',
+          timeZone: 'Asia/Almaty',
           hour:   '2-digit',
           minute: '2-digit',
           second: '2-digit',
@@ -25,7 +25,7 @@ function TucsonClock({ lang }) {
 
   return (
     <span className="num-tabular" style={{ fontFamily: 'var(--font-mono)' }}>
-      {lang === 'ru' ? 'ТУСОН, ШТ. АРИЗОНА' : 'TUCSON, AZ'} &nbsp;·&nbsp; {time} MST
+      {lang === 'ru' ? 'ПЕТРОПАВЛОВСК, СКО' : 'PETROPAVLOVSK, KZ'} &nbsp;·&nbsp; {time} +05
     </span>
   )
 }
@@ -107,7 +107,7 @@ export default function Footer({ t, lang }) {
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 text-[10px] tracking-[0.16em] fg-mute"
              style={{ fontFamily: 'var(--font-mono)' }}>
           <span>{t.footer.copy.toUpperCase()}</span>
-          <TucsonClock lang={lang} />
+          <LocalClock lang={lang} />
           <span className="flex items-center gap-2">
             <span
               className="w-1.5 h-1.5 rounded-full blink"
