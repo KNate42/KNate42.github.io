@@ -93,7 +93,7 @@ export default function Footer({ t, lang }) {
           />
           <ColophonCol
             heading={lang === 'ru' ? 'ОПУБЛИКОВАНО' : 'PUBLISHED'}
-            lines={['knate42.github.io', 'GitHub Pages', 'Edition · MMXXVI']}
+            lines={['knate42.github.io', 'GitHub Pages', 'Edition · 2026']}
           />
           <ColophonCol
             heading={lang === 'ru' ? 'СВЯЗАТЬСЯ' : 'CORRESPOND'}
@@ -133,7 +133,7 @@ export default function Footer({ t, lang }) {
               fontVariationSettings: '"opsz" 36, "SOFT" 100, "WONK" 1',
             }}
           >
-            №&nbsp;04 · MMXXVI
+            №&nbsp;04 · 2026
           </span>
         </div>
       </div>

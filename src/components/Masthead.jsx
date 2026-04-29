@@ -16,14 +16,14 @@ export default function Masthead({ lang }) {
   const items = lang === 'ru'
     ? [
         ['ВЫПУСК', 'N° 04'],
-        ['ГОД',    'MMXXVI'],
+        ['ГОД',    '2026'],
         ['БЮРО',   'ДАННЫЕ × ВЕБ'],
         ['МЕСТО',  '54.87°N · 69.15°E'],
         ['ВРЕМЯ',  stamp],
       ]
     : [
         ['EDITION',  'N° 04'],
-        ['YEAR',     'MMXXVI'],
+        ['YEAR',     '2026'],
         ['BUREAU',   'DATA × WEB'],
         ['LOCATION', '54.87°N · 69.15°E'],
         ['TIME',     stamp],

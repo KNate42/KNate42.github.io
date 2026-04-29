@@ -217,7 +217,7 @@ export default function Contact({ t, lang }) {
                     {lang === 'ru' ? 'ПОДЛИННО' : 'AUTHENTIC'}
                   </div>
                   <div className="text-[10px] tracking-[0.2em] num-tabular" style={{ fontFamily: 'var(--font-mono)' }}>
-                    MMXXVI
+                    2026
                   </div>
                 </div>
               </div>
