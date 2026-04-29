@@ -33,8 +33,8 @@ export default function Masthead({ lang }) {
     <div
       className="w-full overflow-hidden"
       style={{
-        background: 'var(--bg-ink)',
-        color: 'var(--bg)',
+        background: 'var(--strip-bg)',
+        color: 'var(--strip-fg)',
         borderBottom: '1px solid var(--ink)',
       }}
     >

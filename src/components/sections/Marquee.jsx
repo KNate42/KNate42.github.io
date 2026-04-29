@@ -25,8 +25,8 @@ export default function MarqueeSection({ items, lang }) {
     <section
       className="overflow-hidden"
       style={{
-        background: 'var(--bg-ink)',
-        color: 'var(--bg)',
+        background: 'var(--strip-bg)',
+        color: 'var(--strip-fg)',
         borderTop: '1px solid var(--ink)',
         borderBottom: '1px solid var(--ink)',
       }}

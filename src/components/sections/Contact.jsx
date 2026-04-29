@@ -50,7 +50,7 @@ export default function Contact({ t, lang }) {
     <section
       id="contact"
       className="px-4 md:px-8 pt-24 pb-24 relative scanlines"
-      style={{ background: 'var(--bg-ink)', color: 'var(--bg)' }}
+      style={{ background: 'var(--strip-bg)', color: 'var(--strip-fg)' }}
     >
       <div className="max-w-[1500px] mx-auto">
 

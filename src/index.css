@@ -50,6 +50,12 @@
      don't use this for emphasis — that's signal's job. */
   --indicator:    #1f6f3c;
 
+  /* inverted broadsheet strips (masthead, marquee, contact).
+     separate from --bg-ink so dark mode doesn't collapse both
+     bg and fg into the same dark range. */
+  --strip-bg:     #0c0b0a;
+  --strip-fg:     #f3efe6;
+
   /* nav uses translucent bg + backdrop-filter once you scroll */
   --nav-bg:       rgba(243, 239, 230, 0.78);
 
@@ -81,6 +87,9 @@
   --signal-glow:  rgba(255, 90, 44, 0.18);
 
   --indicator:    #4ea974;
+
+  --strip-bg:     #16140f;
+  --strip-fg:     #ebe5d6;
 
   --nav-bg:       rgba(12, 11, 10, 0.78);
 
