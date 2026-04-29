@@ -65,17 +65,20 @@ export default function Nav({ t, theme, toggleTheme, lang, toggleLang }) {
             </span>
           </a>
 
-          {/* desktop links — chapter numbers + label, broadsheet style */}
+          {/* desktop links — chapter numbers + label, broadsheet style.
+              .link-line forces display: inline-block, which kills any
+              flex `gap` on the anchor itself — so the spacing between
+              the number and the label is a margin on the number span. */}
           <nav className="hidden md:flex items-center gap-7 justify-center" aria-label="Primary">
             {t.nav.links.map((link, i) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="link-line text-[12px] flex items-baseline gap-1.5 fg-mute hover:fg transition-colors"
+                className="link-line text-[12px] fg-mute hover:fg transition-colors"
                 style={{ fontFamily: 'var(--font-sans)', fontWeight: 500, letterSpacing: '0.02em' }}
               >
                 <span
-                  className="num-tabular"
+                  className="num-tabular mr-3"
                   style={{
                     fontFamily: 'var(--font-mono)',
                     color: 'var(--signal)',
