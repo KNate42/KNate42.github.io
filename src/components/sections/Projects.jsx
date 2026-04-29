@@ -73,9 +73,11 @@ export default function Projects({ t, lang }) {
         </motion.div>
 
         {/* ledger column header. grid template is shared with each
-            row below — keep them in sync if you change widths */}
+            row below — keep them in sync if you change widths.
+            hidden on mobile because the rows there use a stacked
+            layout (meta strip on top of content) instead of 4 cols. */}
         <div
-          className="grid grid-cols-[60px_140px_1fr_auto] md:grid-cols-[80px_180px_1fr_auto] gap-x-6 pb-3 text-[10px] tracking-[0.2em] fg-mute"
+          className="hidden md:grid md:grid-cols-[80px_180px_1fr_auto] gap-x-6 pb-3 text-[10px] tracking-[0.2em] fg-mute"
           style={{ fontFamily: 'var(--font-mono)', borderBottom: '1px solid var(--ink)' }}
         >
           <span>N°</span>
@@ -83,6 +85,8 @@ export default function Projects({ t, lang }) {
           <span>{lang === 'ru' ? 'ЗАПИСЬ' : 'ENTRY'}</span>
           <span className="text-right">{lang === 'ru' ? 'ССЫЛКА' : 'REF.'}</span>
         </div>
+        {/* mobile-only top hairline since the column header is hidden */}
+        <div className="md:hidden" style={{ borderBottom: '1px solid var(--ink)' }} />
 
         {/* one row per ledger entry */}
         <div>
@@ -120,7 +124,7 @@ function LedgerRow({ item, index, lang }) {
   const Body = (
     <motion.article
       ref={ref}
-      className="group grid grid-cols-[60px_140px_1fr_auto] md:grid-cols-[80px_180px_1fr_auto] gap-x-6 py-7 relative"
+      className="group flex flex-col md:grid md:grid-cols-[80px_180px_1fr_auto] md:gap-x-6 py-7 relative"
       style={{ borderBottom: '1px solid var(--rule)' }}
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -138,9 +142,36 @@ function LedgerRow({ item, index, lang }) {
         aria-hidden="true"
       />
 
-      {/* N° — zero-padded so 001/002/003 align */}
+      {/* MOBILE meta strip — N° + DATE + REF arrow on one line.
+          replaces the desktop N°/PERIOD/REF columns when stacked. */}
+      <div className="md:hidden relative flex items-center gap-3 mb-3">
+        <span
+          className="num-tabular text-[12px]"
+          style={{
+            fontFamily: 'var(--font-mono)',
+            color: 'var(--signal)',
+            letterSpacing: '0.05em',
+          }}
+        >
+          {String(index + 1).padStart(3, '0')}
+        </span>
+        <span
+          className="num-tabular text-[10px] fg-mute tracking-[0.1em]"
+          style={{ fontFamily: 'var(--font-mono)' }}
+        >
+          {item.date.toUpperCase()}
+        </span>
+        <span
+          className="ml-auto text-[16px]"
+          style={{ color: item.href ? 'var(--signal)' : 'var(--ink-faint)', fontFamily: 'var(--font-mono)' }}
+        >
+          {item.href ? '↗' : '·'}
+        </span>
+      </div>
+
+      {/* DESKTOP N° — zero-padded so 001/002/003 align */}
       <span
-        className="relative num-tabular text-[12px] pt-1"
+        className="relative hidden md:block num-tabular text-[12px] pt-1"
         style={{
           fontFamily: 'var(--font-mono)',
           color: 'var(--signal)',
@@ -150,9 +181,9 @@ function LedgerRow({ item, index, lang }) {
         {String(index + 1).padStart(3, '0')}
       </span>
 
-      {/* PERIOD — date string from content.js */}
+      {/* DESKTOP PERIOD — date string from content.js */}
       <span
-        className="relative num-tabular text-[11px] pt-1.5 fg-mute tracking-[0.1em]"
+        className="relative hidden md:block num-tabular text-[11px] pt-1.5 fg-mute tracking-[0.1em]"
         style={{ fontFamily: 'var(--font-mono)' }}
       >
         {item.date.toUpperCase()}
@@ -206,9 +237,10 @@ function LedgerRow({ item, index, lang }) {
         </div>
       </div>
 
-      {/* REF arrow — coloured if there's a real link, dim dot otherwise */}
+      {/* DESKTOP REF arrow — coloured if there's a real link, dim
+          dot otherwise. mobile shows this in the top meta strip. */}
       <span
-        className="relative pt-1 text-right text-[18px] transition-colors"
+        className="relative hidden md:block pt-1 text-right text-[18px] transition-colors"
         style={{ color: item.href ? 'var(--signal)' : 'var(--ink-faint)', fontFamily: 'var(--font-mono)' }}
       >
         {item.href ? '↗' : '·'}
