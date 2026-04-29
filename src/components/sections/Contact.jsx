@@ -72,7 +72,7 @@ export default function Contact({ t, lang }) {
             fontWeight: 500,
             letterSpacing: '-0.04em',
             lineHeight: 0.95,
-            color: 'var(--bg)',
+            color: 'var(--strip-fg)',
             fontVariationSettings: '"opsz" 144, "SOFT" 70, "WONK" 0',
           }}
           initial={{ opacity: 0, y: 24 }}
@@ -197,7 +197,7 @@ export default function Contact({ t, lang }) {
                     className="display-sm italic"
                     style={{
                       fontSize: '1.5rem',
-                      color: 'var(--bg)',
+                      color: 'var(--strip-fg)',
                       fontWeight: 400,
                       fontVariationSettings: '"opsz" 36, "SOFT" 100, "WONK" 1',
                     }}
@@ -353,7 +353,7 @@ function ChannelRow({ link, index }) {
 // swaps which custom property the rule colors read from.
 function SectionMasthead({ label, sub, sheet, lang, inverted }) {
   const muted = inverted ? 'rgba(255,255,255,0.55)' : 'var(--ink-mute)'
-  const fg    = inverted ? 'var(--bg)'              : 'var(--ink)'
+  const fg    = inverted ? 'var(--strip-fg)'         : 'var(--ink)'
   const rule  = inverted ? 'rgba(255,255,255,0.18)' : 'var(--rule)'
   return (
     <div className="mb-14">

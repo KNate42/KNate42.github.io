@@ -108,7 +108,7 @@ export default function Nav({ t, theme, toggleTheme, lang, toggleLang }) {
 
             <button
               onClick={toggleTheme}
-              className="w-8 h-8 flex items-center justify-center fg-mute hover:fg transition-colors"
+              className="w-10 h-10 flex items-center justify-center fg-mute hover:fg transition-colors"
               aria-label="Toggle theme"
               style={{ border: '1px solid var(--rule)' }}
             >
@@ -119,7 +119,7 @@ export default function Nav({ t, theme, toggleTheme, lang, toggleLang }) {
                 using transforms (not display:none) so it animates */}
             <button
               onClick={() => setOpen(v => !v)}
-              className="md:hidden w-8 h-8 flex flex-col items-center justify-center gap-1 fg"
+              className="md:hidden w-10 h-10 flex flex-col items-center justify-center gap-1 fg"
               style={{ border: '1px solid var(--rule)' }}
               aria-label="Menu"
               aria-expanded={open}

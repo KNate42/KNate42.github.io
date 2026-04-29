@@ -217,6 +217,11 @@ h1, h2, h3, h4, .display {
 /* on dark, multiply turns the grain pitch-black, so swap to screen */
 .dark .grain-overlay { mix-blend-mode: screen; opacity: 0.045; }
 
+/* grain animation is expensive on mobile — keep the texture but drop the drift */
+@media (max-width: 640px) {
+  .grain-overlay { animation: none; }
+}
+
 /* steps() instead of linear so it actually flickers like film grain */
 @keyframes grain-shift {
   0%   { transform: translate(0, 0); }
