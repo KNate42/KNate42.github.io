@@ -124,6 +124,11 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: geometricPrecision; /* sharper hairlines on retina */
+  /* clip horizontal overflow at the document root.
+     body alone isn't enough on mobile Safari — fixed-position layers
+     (e.g. .grain-overlay at 500% width) escape body's overflow context
+     and trigger horizontal scroll if html doesn't also clip. */
+  overflow-x: clip;
 }
 
 body {
@@ -133,7 +138,7 @@ body {
   /* ss01 + cv11 are Inter Tight stylistic sets — nicer "a" + "1" */
   font-feature-settings: "ss01" 1, "cv11" 1, "calt" 1;
   line-height: 1.55;
-  overflow-x: hidden;
+  overflow-x: clip;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 

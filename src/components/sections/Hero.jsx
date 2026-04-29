@@ -127,7 +127,7 @@ export default function Hero({ t, lang }) {
           <h1
             className="display fg"
             style={{
-              fontSize: 'clamp(2.6rem, 12vw, 9.2rem)',
+              fontSize: 'clamp(2.1rem, 12vw, 9.2rem)',
               lineHeight: 0.92,
               fontWeight: 500,
               letterSpacing: '-0.04em',

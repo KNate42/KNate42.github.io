@@ -158,8 +158,10 @@ function LedgerRow({ item, index, lang }) {
         {item.date.toUpperCase()}
       </span>
 
-      {/* ENTRY — role label, title, body, tags */}
-      <div className="relative">
+      {/* ENTRY — role label, title, body, tags.
+          min-w-0 lets this 1fr cell shrink instead of pushing the row
+          wider than the viewport on narrow screens */}
+      <div className="relative min-w-0">
         <div
           className="text-[10px] tracking-[0.18em] mb-2"
           style={{ color: 'var(--signal)', fontFamily: 'var(--font-mono)' }}

@@ -68,7 +68,7 @@ export default function Footer({ t, lang }) {
         <div
           className="display fg my-12 md:my-16"
           style={{
-            fontSize: 'clamp(3rem, 14vw, 11rem)',
+            fontSize: 'clamp(2.1rem, 13vw, 11rem)',
             fontWeight: 500,
             letterSpacing: '-0.045em',
             lineHeight: 0.88,
