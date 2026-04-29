@@ -3,16 +3,22 @@ import { motion, animate } from 'framer-motion'
 
 const ease = [0.22, 1, 0.36, 1]
 
+// "magnetic" link — the element nudges toward the cursor when it's
+// inside the bounding box. 0.18 is a tuning constant; higher = snappier.
+// I keep this as a wrapper so I can drop it onto any anchor without
+// duplicating the motion plumbing every time.
 function MagneticLink({ href, children, target, className, style }) {
   const ref = useRef(null)
 
   const onMove = (e) => {
     const rect = ref.current.getBoundingClientRect()
+    // offset from the element's center
     const dx = (e.clientX - (rect.left + rect.width / 2)) * 0.18
-    const dy = (e.clientY - (rect.top + rect.height / 2)) * 0.18
+    const dy = (e.clientY - (rect.top  + rect.height / 2)) * 0.18
     animate(ref.current, { x: dx, y: dy }, { type: 'spring', stiffness: 180, damping: 18, mass: 0.4 })
   }
 
+  // snap back to origin on mouse leave
   const onLeave = () => {
     animate(ref.current, { x: 0, y: 0 }, { type: 'spring', stiffness: 180, damping: 18 })
   }
@@ -22,6 +28,7 @@ function MagneticLink({ href, children, target, className, style }) {
       ref={ref}
       href={href}
       target={target}
+      // forward rel='noopener noreferrer' for external links automatically
       rel={target === '_blank' ? 'noopener noreferrer' : undefined}
       onMouseMove={onMove}
       onMouseLeave={onLeave}
@@ -33,6 +40,9 @@ function MagneticLink({ href, children, target, className, style }) {
   )
 }
 
+// "dispatch" section — fake postal slip on the left + channel list
+// on the right. dark background to break up the cream paper sections
+// and give the page a pacing change before the footer.
 export default function Contact({ t, lang }) {
   const { contact } = t
 
@@ -44,7 +54,6 @@ export default function Contact({ t, lang }) {
     >
       <div className="max-w-[1500px] mx-auto">
 
-        {/* Section masthead */}
         <SectionMasthead
           label={lang === 'ru' ? 'РАЗДЕЛ IV' : 'SECTION IV'}
           sub={lang === 'ru' ? 'СВЯЗЬ' : 'DISPATCH'}
@@ -53,7 +62,9 @@ export default function Contact({ t, lang }) {
           inverted
         />
 
-        {/* Display heading */}
+        {/* big heading. the middle word is the italic accent —
+            content.js gives us the heading as a 3-tuple specifically
+            for this so the styling can sit only on [1] */}
         <motion.h2
           className="display mb-16 md:mb-20"
           style={{
@@ -82,10 +93,10 @@ export default function Contact({ t, lang }) {
           <span> {contact.heading[2]}</span>
         </motion.h2>
 
-        {/* Dispatch card grid */}
+        {/* 7/5 split on desktop, stacked on mobile */}
         <div className="grid grid-cols-12 gap-x-6 gap-y-10">
 
-          {/* LEFT — dispatch slip */}
+          {/* LEFT — the dispatch slip "card" */}
           <motion.div
             className="col-span-12 lg:col-span-7 relative"
             initial={{ opacity: 0, y: 20 }}
@@ -100,7 +111,7 @@ export default function Contact({ t, lang }) {
                 background: 'rgba(255,255,255,0.025)',
               }}
             >
-              {/* Slip header — DISPATCH FORM */}
+              {/* slip header — DISPATCH FORM + made-up reference number */}
               <div
                 className="flex items-baseline justify-between mb-8 pb-3"
                 style={{ borderBottom: '1px solid rgba(255,255,255,0.18)' }}
@@ -111,6 +122,8 @@ export default function Contact({ t, lang }) {
                 >
                   ✦ {lang === 'ru' ? 'БЛАНК ОТПРАВКИ' : 'DISPATCH FORM'}
                 </span>
+                {/* random 3-digit number per render — not stable across
+                    refreshes, which is the point. it's a flourish. */}
                 <span
                   className="text-[10px] tracking-[0.16em] num-tabular"
                   style={{ fontFamily: 'var(--font-mono)', color: 'rgba(255,255,255,0.55)' }}
@@ -119,12 +132,12 @@ export default function Contact({ t, lang }) {
                 </span>
               </div>
 
-              {/* Slip rows */}
+              {/* form fields, pretending to be a real dispatch slip */}
               <dl className="space-y-4 text-[12px]"
                   style={{ fontFamily: 'var(--font-mono)', letterSpacing: '0.04em' }}>
-                <SlipRow k={lang === 'ru' ? 'ОТ' : 'FROM'} v="N. ANFINOGENTOV · TUCSON, AZ" />
-                <SlipRow k={lang === 'ru' ? 'КОМУ' : 'TO'} v={lang === 'ru' ? 'ВАМ — ЧИТАТЕЛЬ ЭТОГО ЛИСТА' : 'YOU — READER OF THIS SHEET'} />
-                <SlipRow k={lang === 'ru' ? 'ТЕМА' : 'RE'} v={lang === 'ru' ? 'СОТРУДНИЧЕСТВО / СТАЖИРОВКА' : 'COLLABORATION / INTERNSHIP'} />
+                <SlipRow k={lang === 'ru' ? 'ОТ'   : 'FROM'} v="N. ANFINOGENTOV · TUCSON, AZ" />
+                <SlipRow k={lang === 'ru' ? 'КОМУ' : 'TO'}   v={lang === 'ru' ? 'ВАМ — ЧИТАТЕЛЬ ЭТОГО ЛИСТА' : 'YOU — READER OF THIS SHEET'} />
+                <SlipRow k={lang === 'ru' ? 'ТЕМА' : 'RE'}   v={lang === 'ru' ? 'СОТРУДНИЧЕСТВО / СТАЖИРОВКА' : 'COLLABORATION / INTERNSHIP'} />
                 <SlipRow k={lang === 'ru' ? 'ДАТА' : 'DATE'} v="2026.04 — ONGOING" mono />
                 <SlipRow k={lang === 'ru' ? 'ЯЗЫК' : 'LANG'} v="EN / RU" />
               </dl>
@@ -134,7 +147,8 @@ export default function Contact({ t, lang }) {
                 style={{ background: 'rgba(255,255,255,0.18)' }}
               />
 
-              {/* Body */}
+              {/* body copy — same `contact.sub` text as before, just in
+                  the slip context. Fraunces text size for warmth. */}
               <p
                 className="text-[16px] leading-[1.65] mb-10"
                 style={{
@@ -147,7 +161,8 @@ export default function Contact({ t, lang }) {
                 {contact.sub}
               </p>
 
-              {/* The big email */}
+              {/* the email is the thing people actually need.
+                  magnetic link makes it feel "alive" */}
               <MagneticLink href="mailto:anfinogentov@arizona.edu" className="block">
                 <span
                   className="display-md block"
@@ -167,7 +182,9 @@ export default function Contact({ t, lang }) {
                 </span>
               </MagneticLink>
 
-              {/* Sign-off / fake signature */}
+              {/* signature + a fake "AUTHENTIC" stamp.
+                  the stamp is hidden on small screens because it
+                  crowds the signature on a phone */}
               <div className="mt-10 flex items-end justify-between">
                 <div>
                   <div
@@ -188,7 +205,7 @@ export default function Contact({ t, lang }) {
                     Никита А.
                   </div>
                 </div>
-                {/* Stamp */}
+                {/* tilted stamp — slight rotation makes it feel pressed */}
                 <div
                   className="hidden sm:flex flex-col items-center justify-center px-4 py-3 rotate-[-6deg]"
                   style={{
@@ -207,7 +224,7 @@ export default function Contact({ t, lang }) {
             </div>
           </motion.div>
 
-          {/* RIGHT — channels list */}
+          {/* RIGHT — list of channels (email/github/telegram/linkedin) */}
           <motion.div
             className="col-span-12 lg:col-span-5 lg:pl-2"
             initial={{ opacity: 0, y: 20 }}
@@ -232,7 +249,8 @@ export default function Contact({ t, lang }) {
               ))}
             </ul>
 
-            {/* Spec footer */}
+            {/* footer of the channels card — reply window + tz.
+                tz is hardcoded MST because Phoenix doesn't DST */}
             <div className="mt-10 grid grid-cols-2 gap-6 text-[10px] tracking-[0.18em]"
                  style={{ fontFamily: 'var(--font-mono)', color: 'rgba(255,255,255,0.55)' }}>
               <div>
@@ -251,6 +269,9 @@ export default function Contact({ t, lang }) {
   )
 }
 
+// one row of the form. the dotted underline on the value is the
+// effect that sells the "form slip" look — without it the rows
+// just look like a normal definition list.
 function SlipRow({ k, v, mono }) {
   return (
     <div className="grid grid-cols-[80px_1fr] gap-4 items-baseline">
@@ -260,6 +281,7 @@ function SlipRow({ k, v, mono }) {
         style={{
           color: 'rgba(255,255,255,0.92)',
           borderBottom: '1px dotted rgba(255,255,255,0.25)',
+          // mono rows (dates) get tighter tracking so digits sit clean
           letterSpacing: mono ? '0.06em' : '0.02em',
         }}
       >
@@ -269,7 +291,11 @@ function SlipRow({ k, v, mono }) {
   )
 }
 
+// one channel row in the right-hand list. 4-col grid: index, code,
+// label, arrow. the .group + group-hover on the arrow gives it the
+// little nudge on hover.
 function ChannelRow({ link, index }) {
+  // 3-letter codes — keeps the column width predictable
   const codes = { email: 'EML', github: 'GIT', telegram: 'TGM', linkedin: 'LIN' }
 
   return (
@@ -283,6 +309,7 @@ function ChannelRow({ link, index }) {
     >
       <a
         href={link.href}
+        // mailto stays in-tab; everything else opens in a new tab
         target={link.kind !== 'email' ? '_blank' : undefined}
         rel={link.kind !== 'email' ? 'noopener noreferrer' : undefined}
         className="grid grid-cols-[44px_60px_1fr_24px] items-center gap-3 py-4"
@@ -321,10 +348,13 @@ function ChannelRow({ link, index }) {
   )
 }
 
+// section masthead — same as the other sections but with an
+// `inverted` flag for the dark background variant. mostly just
+// swaps which custom property the rule colors read from.
 function SectionMasthead({ label, sub, sheet, lang, inverted }) {
   const muted = inverted ? 'rgba(255,255,255,0.55)' : 'var(--ink-mute)'
-  const fg = inverted ? 'var(--bg)' : 'var(--ink)'
-  const rule = inverted ? 'rgba(255,255,255,0.18)' : 'var(--rule)'
+  const fg    = inverted ? 'var(--bg)'              : 'var(--ink)'
+  const rule  = inverted ? 'rgba(255,255,255,0.18)' : 'var(--rule)'
   return (
     <div className="mb-14">
       <div className="flex items-center justify-between text-[10px] tracking-[0.18em] mb-3"
@@ -340,7 +370,7 @@ function SectionMasthead({ label, sub, sheet, lang, inverted }) {
           <span className="num-tabular" style={{ color: fg }}>{sheet}</span>
         </span>
       </div>
-      <div style={{ height: '1px', background: rule }} />
+      <div style={{ height: '1px',   background: rule }} />
       <div style={{ height: '0.5px', marginTop: '4px', background: rule }} />
     </div>
   )

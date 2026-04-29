@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react'
 
+// live local clock pinned to Tucson (Phoenix tz, no DST).
+// runs at 1 Hz which is overkill for seconds, but the second hand
+// is half the charm so I left it.
 function TucsonClock({ lang }) {
   const [time, setTime] = useState('--:--:--')
 
@@ -8,7 +11,7 @@ function TucsonClock({ lang }) {
       setTime(
         new Date().toLocaleTimeString('en-US', {
           timeZone: 'America/Phoenix',
-          hour: '2-digit',
+          hour:   '2-digit',
           minute: '2-digit',
           second: '2-digit',
           hour12: false,
@@ -27,6 +30,10 @@ function TucsonClock({ lang }) {
   )
 }
 
+// page footer. doubles as the colophon for the whole "broadsheet"
+// metaphor — typeset in / built with / published / correspond.
+// the giant wordmark is just for visual closure; remove it and the
+// page ends abruptly.
 export default function Footer({ t, lang }) {
   return (
     <footer
@@ -38,7 +45,8 @@ export default function Footer({ t, lang }) {
     >
       <div className="max-w-[1500px] mx-auto">
 
-        {/* Section masthead */}
+        {/* same masthead-strip pattern as the other sections, but
+            inline here because this is the only footer */}
         <div className="flex items-center justify-between text-[10px] tracking-[0.18em] fg-mute mb-3"
              style={{ fontFamily: 'var(--font-mono)' }}>
           <span className="flex items-center gap-3">
@@ -55,7 +63,8 @@ export default function Footer({ t, lang }) {
         <div className="rule-h" />
         <div className="rule-h mt-1" style={{ height: '0.5px' }} />
 
-        {/* Mega wordmark */}
+        {/* oversized wordmark. clamp() handles mobile — anything
+            smaller than 3rem and the period sits awkwardly */}
         <div
           className="display fg my-12 md:my-16"
           style={{
@@ -70,7 +79,8 @@ export default function Footer({ t, lang }) {
           <span style={{ color: 'var(--signal)' }}>.</span>
         </div>
 
-        {/* Colophon grid */}
+        {/* four-column colophon block.
+            on mobile it collapses to 2 cols (4 was unreadable). */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10 mb-12 pt-6"
              style={{ borderTop: '1px solid var(--rule)' }}>
           <ColophonCol
@@ -92,7 +102,7 @@ export default function Footer({ t, lang }) {
           />
         </div>
 
-        {/* Bottom strip */}
+        {/* bottom strip: copy, clock, status dot */}
         <div className="rule-h mb-4" />
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 text-[10px] tracking-[0.16em] fg-mute"
              style={{ fontFamily: 'var(--font-mono)' }}>
@@ -107,7 +117,7 @@ export default function Footer({ t, lang }) {
           </span>
         </div>
 
-        {/* Big edition mark */}
+        {/* end mark — closes the document like a real publication */}
         <div className="mt-8 flex items-baseline justify-between">
           <span
             className="text-[10px] tracking-[0.2em] fg-faint"
@@ -131,6 +141,8 @@ export default function Footer({ t, lang }) {
   )
 }
 
+// one column of the colophon. lines can be plain strings, or links
+// when an `hrefs[i]` is provided (only used for the contact column).
 function ColophonCol({ heading, lines, hrefs }) {
   return (
     <div>
@@ -155,6 +167,7 @@ function ColophonCol({ heading, lines, hrefs }) {
               <a
                 href={hrefs[i]}
                 className="link-line"
+                // mailto links shouldn't open in a new tab
                 target={hrefs[i].startsWith('mailto') ? undefined : '_blank'}
                 rel="noopener noreferrer"
               >

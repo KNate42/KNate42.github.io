@@ -1,16 +1,24 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
+// sticky top nav.
+// transparent until you scroll, then it grows a glass background.
+// mobile gets a clip-path drawer instead of the inline nav, which
+// also locks page scroll while it's open.
 export default function Nav({ t, theme, toggleTheme, lang, toggleLang }) {
   const [scrolled, setScrolled] = useState(false)
-  const [open, setOpen] = useState(false)
+  const [open, setOpen]         = useState(false)
 
+  // 16px threshold — anything smaller and it flickers when scrollY
+  // fluctuates a pixel from rubber-banding on macOS
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16)
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  // freeze the page behind the mobile drawer so the body doesn't
+  // scroll under the menu while you swipe inside it
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : ''
     return () => { document.body.style.overflow = '' }
@@ -24,6 +32,7 @@ export default function Nav({ t, theme, toggleTheme, lang, toggleLang }) {
         className="sticky top-0 z-50 transition-[border-color,background] duration-300"
         style={{
           background: scrolled ? 'var(--nav-bg)' : 'transparent',
+          // backdrop-filter is expensive — only apply it when actually visible
           backdropFilter: scrolled ? 'blur(14px) saturate(1.2)' : 'none',
           WebkitBackdropFilter: scrolled ? 'blur(14px) saturate(1.2)' : 'none',
           borderBottom: scrolled ? '1px solid var(--rule)' : '1px solid transparent',
@@ -31,7 +40,7 @@ export default function Nav({ t, theme, toggleTheme, lang, toggleLang }) {
       >
         <div className="max-w-[1500px] mx-auto px-4 md:px-8 h-14 grid grid-cols-[auto_1fr_auto] items-center gap-6">
 
-          {/* Brand — typeset signature */}
+          {/* brand — set in Fraunces with WONK on for personality */}
           <a href="#" className="flex items-baseline gap-2 group">
             <span
               className="display text-[22px] leading-none"
@@ -43,6 +52,7 @@ export default function Nav({ t, theme, toggleTheme, lang, toggleLang }) {
             >
               Anfinogentov
             </span>
+            {/* tiny editorial number next to the wordmark — hidden on phones */}
             <span
               className="text-[10px] num-tabular hidden sm:inline"
               style={{
@@ -55,7 +65,7 @@ export default function Nav({ t, theme, toggleTheme, lang, toggleLang }) {
             </span>
           </a>
 
-          {/* Desktop nav with chapter numbers */}
+          {/* desktop links — chapter numbers + label, broadsheet style */}
           <nav className="hidden md:flex items-center gap-7 justify-center" aria-label="Primary">
             {t.nav.links.map((link, i) => (
               <a
@@ -79,7 +89,7 @@ export default function Nav({ t, theme, toggleTheme, lang, toggleLang }) {
             ))}
           </nav>
 
-          {/* Controls */}
+          {/* right-side controls: lang toggle, theme, hamburger */}
           <div className="flex items-center gap-1.5 justify-end">
             <button
               onClick={toggleLang}
@@ -102,6 +112,8 @@ export default function Nav({ t, theme, toggleTheme, lang, toggleLang }) {
               {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
             </button>
 
+            {/* hamburger — three lines that morph into an X.
+                using transforms (not display:none) so it animates */}
             <button
               onClick={() => setOpen(v => !v)}
               className="md:hidden w-8 h-8 flex flex-col items-center justify-center gap-1 fg"
@@ -117,7 +129,9 @@ export default function Nav({ t, theme, toggleTheme, lang, toggleLang }) {
         </div>
       </header>
 
-      {/* Mobile drawer */}
+      {/* mobile drawer — drops down from under the masthead.
+          clip-path is what makes it look like a curtain pulling
+          down rather than a slide. */}
       <AnimatePresence>
         {open && (
           <motion.div
@@ -125,7 +139,7 @@ export default function Nav({ t, theme, toggleTheme, lang, toggleLang }) {
             style={{ background: 'var(--bg)' }}
             initial={{ clipPath: 'inset(0 0 100% 0)' }}
             animate={{ clipPath: 'inset(0 0 0% 0)' }}
-            exit={{ clipPath: 'inset(0 0 100% 0)' }}
+            exit={{    clipPath: 'inset(0 0 100% 0)' }}
             transition={{ duration: 0.45, ease: [0.76, 0, 0.24, 1] }}
           >
             <nav className="flex flex-col px-6 pt-10">
@@ -142,7 +156,7 @@ export default function Nav({ t, theme, toggleTheme, lang, toggleLang }) {
                     borderBottom: '1px solid var(--rule)',
                   }}
                   initial={{ y: 28, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
+                  animate={{ y: 0,  opacity: 1 }}
                   transition={{ delay: i * 0.07 + 0.15, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
                 >
                   <span
@@ -183,6 +197,8 @@ export default function Nav({ t, theme, toggleTheme, lang, toggleLang }) {
   )
 }
 
+// inline icons. lucide / heroicons would pull a whole package in
+// for two glyphs — not worth it.
 function SunIcon() {
   return (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">

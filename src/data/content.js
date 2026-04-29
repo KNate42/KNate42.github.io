@@ -1,4 +1,10 @@
+// all the copy lives here, keyed by language.
+// add a new locale by adding a top-level key with the same shape.
+// shape is intentionally loose — components destructure what they need
+// and don't validate, so missing fields just silently render undefined.
+// keep that in mind if you fork this.
 export const content = {
+  // ─── ENGLISH ─────────────────────────────────────────────
   en: {
     nav: {
       links: [
@@ -7,18 +13,27 @@ export const content = {
         { label: 'Contact', href: '#contact' },
       ],
     },
+
     hero: {
       eyebrow: 'Open to internships & collaborations',
+      // role rotator — exactly two strings, alternating.
+      // the third visible span in Hero.jsx is a duplicate of [0]
+      // so the loop wraps cleanly. don't add a 3rd here.
       roles: ['Data Scientist', 'Web Developer'],
       location: 'University of Arizona · Tucson, AZ',
       bio: 'I work at the intersection of data and the web — visualising insights, learning ML, building functional interfaces.',
       cta: 'Get in Touch',
       ctaSecondary: 'View GitHub',
     },
+
+    // strings shown in the marquee/ticker. order matters — Marquee.jsx
+    // joins these against the LEVELS / DELTAS arrays by index, so don't
+    // resort this list without also updating those.
     stack: [
       'Python', 'Machine Learning', 'SQL', 'NumPy', 'Scikit-learn',
       'Pandas', 'HTML', 'CSS', 'JavaScript', 'React', 'MATLAB', 'Data Pipelines',
     ],
+
     work: {
       label: '01',
       title: 'Education & Work',
@@ -30,6 +45,7 @@ export const content = {
           title: 'University of Arizona',
           body: 'Studying Data Science with a focus on machine learning, statistical modelling, and data visualisation. Building personal web projects alongside coursework to sharpen programming skills.',
           tags: ['Python', 'Machine Learning', 'Statistics'],
+          // null href = no outbound link, REF column shows a dim dot
           href: null,
         },
         {
@@ -42,25 +58,30 @@ export const content = {
         },
       ],
     },
+
     skills: {
       label: '02',
       title: 'Technical Expertise',
+      // categories render as 3 columns on desktop. add a 4th and the grid
+      // in Skills.jsx will need to change (currently md:grid-cols-3).
       categories: [
         {
           name: 'Core Stack',
           items: [
-            { name: 'Python',             level: 'Junior'       },
-            { name: 'HTML / CSS / JS',    level: 'Intermediate' },
-            { name: 'SQL',                level: 'Junior'       },
-            { name: 'NumPy & Scikit-learn', level: 'Learning'   },
+            // `level` strings have to match a key in LEVEL_VALUES (Skills.jsx),
+            // otherwise the bar falls back to 3 cells.
+            { name: 'Python',                level: 'Junior'       },
+            { name: 'HTML / CSS / JS',       level: 'Intermediate' },
+            { name: 'SQL',                   level: 'Junior'       },
+            { name: 'NumPy & Scikit-learn',  level: 'Learning'     },
           ],
         },
         {
           name: 'Data & Viz',
           items: [
-            { name: 'Pandas',      level: 'Junior'  },
-            { name: 'SM Studio',   level: 'Familiar' },
-            { name: 'MATLAB',      level: 'Familiar' },
+            { name: 'Pandas',     level: 'Junior'   },
+            { name: 'SM Studio',  level: 'Familiar' },
+            { name: 'MATLAB',     level: 'Familiar' },
           ],
         },
         {
@@ -73,17 +94,21 @@ export const content = {
         },
       ],
     },
+
     contact: {
       label: '03',
+      // heading is split into 3 parts so the middle word can be styled
+      // (italic + signal colour) on its own. don't merge into one string.
       heading: ['Got a project or', 'idea', 'to work on?'],
       sub: 'Open to internships, research collaborations, and interesting side projects. Just reach out.',
       links: [
-        { label: 'anfinogentov@arizona.edu',       href: 'mailto:anfinogentov@arizona.edu',              kind: 'email'    },
-        { label: 'github.com/KNate42',              href: 'https://github.com/KNate42',                   kind: 'github'   },
-        { label: '@Ezekiel_XIII',                   href: 'https://t.me/Ezekiel_XIII',                    kind: 'telegram' },
-        { label: 'linkedin.com/in/nikitaanfinogentov', href: 'https://www.linkedin.com/in/nikitaanfinogentov', kind: 'linkedin' },
+        { label: 'anfinogentov@arizona.edu',           href: 'mailto:anfinogentov@arizona.edu',                  kind: 'email'    },
+        { label: 'github.com/KNate42',                  href: 'https://github.com/KNate42',                       kind: 'github'   },
+        { label: '@Ezekiel_XIII',                       href: 'https://t.me/Ezekiel_XIII',                        kind: 'telegram' },
+        { label: 'linkedin.com/in/nikitaanfinogentov',  href: 'https://www.linkedin.com/in/nikitaanfinogentov',   kind: 'linkedin' },
       ],
     },
+
     footer: {
       copy: '© 2026 Nikita Anfinogentov',
       links: [
@@ -94,6 +119,9 @@ export const content = {
     },
   },
 
+  // ─── РУССКИЙ ─────────────────────────────────────────────
+  // mirrors the english tree exactly. if you add a key over there,
+  // add it here too — components don't have a fallback.
   ru: {
     nav: {
       links: [
@@ -102,18 +130,27 @@ export const content = {
         { label: 'Контакты', href: '#contact' },
       ],
     },
+
     hero: {
       eyebrow: 'Открыт к стажировкам и сотрудничеству',
+      // first role kept in English on purpose — "Data Scientist" reads
+      // cleaner here than the russian equivalent, and matches how I'd
+      // actually introduce myself
       roles: ['Data Scientist', 'Веб-разработчик'],
       location: 'Университет Аризоны · Тусон, США',
       bio: 'Работаю на стыке данных и веба — визуализирую инсайты, изучаю ML, строю функциональные интерфейсы.',
       cta: 'Написать',
       ctaSecondary: 'GitHub',
     },
+
+    // intentionally not localised — these are technology names,
+    // and "Пайплайны" stays as the one exception because it's awkward
+    // in english on a russian-language page
     stack: [
       'Python', 'Machine Learning', 'SQL', 'NumPy', 'Scikit-learn',
       'Pandas', 'HTML', 'CSS', 'JavaScript', 'React', 'MATLAB', 'Пайплайны',
     ],
+
     work: {
       label: '01',
       title: 'Образование и проекты',
@@ -137,6 +174,7 @@ export const content = {
         },
       ],
     },
+
     skills: {
       label: '02',
       title: 'Технические навыки',
@@ -144,10 +182,10 @@ export const content = {
         {
           name: 'Основной стек',
           items: [
-            { name: 'Python',             level: 'Джуниор'    },
-            { name: 'HTML / CSS / JS',    level: 'Средний'    },
-            { name: 'SQL',                level: 'Джуниор'    },
-            { name: 'NumPy & Scikit-learn', level: 'Изучаю'   },
+            { name: 'Python',                 level: 'Джуниор' },
+            { name: 'HTML / CSS / JS',        level: 'Средний' },
+            { name: 'SQL',                    level: 'Джуниор' },
+            { name: 'NumPy & Scikit-learn',   level: 'Изучаю'  },
           ],
         },
         {
@@ -168,17 +206,19 @@ export const content = {
         },
       ],
     },
+
     contact: {
       label: '03',
       heading: ['Есть проект или', 'идея', 'для совместной работы?'],
       sub: 'Открыт для стажировок, исследовательских коллабораций и интересных сайд-проектов. Просто напишите.',
       links: [
-        { label: 'anfinogentov@arizona.edu',          href: 'mailto:anfinogentov@arizona.edu',              kind: 'email'    },
-        { label: 'github.com/KNate42',                href: 'https://github.com/KNate42',                   kind: 'github'   },
-        { label: '@Ezekiel_XIII',                     href: 'https://t.me/Ezekiel_XIII',                    kind: 'telegram' },
-        { label: 'linkedin.com/in/nikitaanfinogentov', href: 'https://www.linkedin.com/in/nikitaanfinogentov', kind: 'linkedin' },
+        { label: 'anfinogentov@arizona.edu',           href: 'mailto:anfinogentov@arizona.edu',                  kind: 'email'    },
+        { label: 'github.com/KNate42',                  href: 'https://github.com/KNate42',                       kind: 'github'   },
+        { label: '@Ezekiel_XIII',                       href: 'https://t.me/Ezekiel_XIII',                        kind: 'telegram' },
+        { label: 'linkedin.com/in/nikitaanfinogentov',  href: 'https://www.linkedin.com/in/nikitaanfinogentov',   kind: 'linkedin' },
       ],
     },
+
     footer: {
       copy: '© 2026 Никита Анфиногентов',
       links: [
