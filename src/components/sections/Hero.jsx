@@ -37,7 +37,7 @@ export default function Hero({ t, lang }) {
     <section
       ref={sectionRef}
       id="home"
-      className="relative px-4 md:px-8 pt-10 pb-20 overflow-hidden scanlines"
+      className="relative px-4 md:px-8 pt-8 pb-14 md:pt-10 md:pb-20 overflow-hidden scanlines"
     >
       {/* tiny editorial header strip — section number + sheet count */}
       <div className="max-w-[1500px] mx-auto mb-8 md:mb-14">
@@ -116,7 +116,7 @@ export default function Hero({ t, lang }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="block text-[11px] tracking-[0.22em] mb-6 md:mb-10"
+            className="block text-[10px] md:text-[11px] tracking-[0.16em] md:tracking-[0.22em] mb-6 md:mb-10"
             style={{ color: 'var(--signal)', fontFamily: 'var(--font-mono)' }}
           >
             ✦ {t.hero.eyebrow.toUpperCase()}
@@ -127,7 +127,7 @@ export default function Hero({ t, lang }) {
           <h1
             className="display fg"
             style={{
-              fontSize: 'clamp(3.5rem, 10.5vw, 9.2rem)',
+              fontSize: 'clamp(2.6rem, 12vw, 9.2rem)',
               lineHeight: 0.92,
               fontWeight: 500,
               letterSpacing: '-0.04em',
@@ -170,7 +170,7 @@ export default function Hero({ t, lang }) {
             <span
               className="display-md italic"
               style={{
-                fontSize: 'clamp(1.6rem, 3vw, 2.2rem)',
+                fontSize: 'clamp(1.35rem, 4.5vw, 2.2rem)',
                 color: 'var(--ink)',
                 fontWeight: 400,
                 letterSpacing: '-0.02em',
@@ -249,8 +249,10 @@ export default function Hero({ t, lang }) {
           </motion.div>
         </motion.div>
 
-        {/* RIGHT — photo + stats. parallax tied to scroll progress. */}
-        <div className="col-span-12 md:col-span-3">
+        {/* RIGHT — photo + stats. parallax tied to scroll progress.
+            on mobile we narrow the photo to 8/12 and center it so the
+            3:4 portrait doesn't dominate the screen. */}
+        <div className="col-span-8 col-start-3 md:col-span-3 md:col-start-auto">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}

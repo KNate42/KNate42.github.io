@@ -12,7 +12,7 @@ export default function Projects({ t, lang }) {
   return (
     <section
       id="work"
-      className="px-4 md:px-8 pt-24 pb-28 relative"
+      className="px-4 md:px-8 pt-16 pb-20 md:pt-24 md:pb-28 relative"
       style={{ background: 'var(--bg)' }}
     >
       <div className="max-w-[1500px] mx-auto">
