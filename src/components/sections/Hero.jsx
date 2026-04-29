@@ -39,18 +39,21 @@ export default function Hero({ t, lang }) {
       id="home"
       className="relative px-4 md:px-8 pt-8 pb-14 md:pt-10 md:pb-20 overflow-hidden scanlines"
     >
-      {/* tiny editorial header strip — section number + sheet count */}
+      {/* tiny editorial header strip — section number + sheet count.
+          on mobile the descriptive sub-labels ("— INTRODUCTION", "SHEET")
+          collide with the right side because of the 0.18em tracking;
+          they're hidden until sm: so the strip stays single-line. */}
       <div className="max-w-[1500px] mx-auto mb-8 md:mb-14">
-        <div className="flex items-center justify-between text-[10px] tracking-[0.18em]"
+        <div className="flex items-center justify-between text-[10px] tracking-[0.12em] sm:tracking-[0.18em] whitespace-nowrap"
              style={{ color: 'var(--ink-mute)', fontFamily: 'var(--font-mono)' }}>
           <span className="flex items-center gap-3">
             <span style={{ color: 'var(--signal)' }}>◆</span>
             <span>{lang === 'ru' ? 'РАЗДЕЛ I' : 'SECTION I'}</span>
-            <span style={{ opacity: 0.4 }}>—</span>
-            <span>{lang === 'ru' ? 'ВВОДНАЯ' : 'INTRODUCTION'}</span>
+            <span className="hidden sm:inline" style={{ opacity: 0.4 }}>—</span>
+            <span className="hidden sm:inline">{lang === 'ru' ? 'ВВОДНАЯ' : 'INTRODUCTION'}</span>
           </span>
           <span className="flex items-center gap-3">
-            <span>{lang === 'ru' ? 'ЛИСТ' : 'SHEET'}</span>
+            <span className="hidden sm:inline">{lang === 'ru' ? 'ЛИСТ' : 'SHEET'}</span>
             <span className="num-tabular fg">001 / 005</span>
           </span>
         </div>

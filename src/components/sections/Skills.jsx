@@ -233,16 +233,16 @@ function Legend({ label, cells }) {
 function SectionMasthead({ label, sub, sheet, lang }) {
   return (
     <div className="mb-16 md:mb-20">
-      <div className="flex items-center justify-between text-[10px] tracking-[0.18em] fg-mute mb-3"
+      <div className="flex items-center justify-between text-[10px] tracking-[0.12em] sm:tracking-[0.18em] fg-mute mb-3 whitespace-nowrap"
            style={{ fontFamily: 'var(--font-mono)' }}>
         <span className="flex items-center gap-3">
           <span style={{ color: 'var(--signal)' }}>◆</span>
           <span>{label}</span>
-          <span style={{ opacity: 0.4 }}>—</span>
-          <span>{sub}</span>
+          <span className="hidden sm:inline" style={{ opacity: 0.4 }}>—</span>
+          <span className="hidden sm:inline">{sub}</span>
         </span>
         <span className="flex items-center gap-3">
-          <span>{lang === 'ru' ? 'ЛИСТ' : 'SHEET'}</span>
+          <span className="hidden sm:inline">{lang === 'ru' ? 'ЛИСТ' : 'SHEET'}</span>
           <span className="num-tabular fg">{sheet}</span>
         </span>
       </div>

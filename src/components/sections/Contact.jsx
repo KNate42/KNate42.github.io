@@ -357,16 +357,16 @@ function SectionMasthead({ label, sub, sheet, lang, inverted }) {
   const rule  = inverted ? 'rgba(255,255,255,0.18)' : 'var(--rule)'
   return (
     <div className="mb-14">
-      <div className="flex items-center justify-between text-[10px] tracking-[0.18em] mb-3"
+      <div className="flex items-center justify-between text-[10px] tracking-[0.12em] sm:tracking-[0.18em] mb-3 whitespace-nowrap"
            style={{ fontFamily: 'var(--font-mono)', color: muted }}>
         <span className="flex items-center gap-3">
           <span style={{ color: 'var(--signal)' }}>◆</span>
           <span>{label}</span>
-          <span style={{ opacity: 0.4 }}>—</span>
-          <span>{sub}</span>
+          <span className="hidden sm:inline" style={{ opacity: 0.4 }}>—</span>
+          <span className="hidden sm:inline">{sub}</span>
         </span>
         <span className="flex items-center gap-3">
-          <span>{lang === 'ru' ? 'ЛИСТ' : 'SHEET'}</span>
+          <span className="hidden sm:inline">{lang === 'ru' ? 'ЛИСТ' : 'SHEET'}</span>
           <span className="num-tabular" style={{ color: fg }}>{sheet}</span>
         </span>
       </div>

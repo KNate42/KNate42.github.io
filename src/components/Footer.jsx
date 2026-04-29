@@ -47,16 +47,16 @@ export default function Footer({ t, lang }) {
 
         {/* same masthead-strip pattern as the other sections, but
             inline here because this is the only footer */}
-        <div className="flex items-center justify-between text-[10px] tracking-[0.18em] fg-mute mb-3"
+        <div className="flex items-center justify-between text-[10px] tracking-[0.12em] sm:tracking-[0.18em] fg-mute mb-3 whitespace-nowrap"
              style={{ fontFamily: 'var(--font-mono)' }}>
           <span className="flex items-center gap-3">
             <span style={{ color: 'var(--signal)' }}>◆</span>
             <span>{lang === 'ru' ? 'РАЗДЕЛ V' : 'SECTION V'}</span>
-            <span style={{ opacity: 0.4 }}>—</span>
-            <span>{lang === 'ru' ? 'КОЛОФОН' : 'COLOPHON'}</span>
+            <span className="hidden sm:inline" style={{ opacity: 0.4 }}>—</span>
+            <span className="hidden sm:inline">{lang === 'ru' ? 'КОЛОФОН' : 'COLOPHON'}</span>
           </span>
           <span className="flex items-center gap-3">
-            <span>{lang === 'ru' ? 'ЛИСТ' : 'SHEET'}</span>
+            <span className="hidden sm:inline">{lang === 'ru' ? 'ЛИСТ' : 'SHEET'}</span>
             <span className="num-tabular fg">005 / 005</span>
           </span>
         </div>

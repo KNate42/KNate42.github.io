@@ -417,9 +417,14 @@ h1, h2, h3, h4, .display {
   mix-blend-mode: multiply;
   z-index: 2;
 }
-/* dark variant — same trick, different blend modes */
-.dark .duotone::before { background: var(--ink);    mix-blend-mode: lighten; }
-.dark .duotone::after  { background: var(--signal); mix-blend-mode: darken; opacity: 0.7; }
+/* dark variant — keep the same tonal recipe as light mode but tune
+   the signal opacity. (the old override used --ink (cream) as the
+   lighten base, which flattened most mid-tones of the grayscale
+   photo to cream and then ::after multiplied signal on top, leaving
+   a solid-orange block. lighten needs a DARK base to let the image
+   pass through, hence reusing --bg-ink here.) */
+.dark .duotone::before { background: var(--bg-ink); mix-blend-mode: lighten; }
+.dark .duotone::after  { background: var(--signal); mix-blend-mode: multiply; opacity: 0.55; }
 
 /* halftone dots on top — bumps the "this was actually printed" feel */
 .halftone { position: relative; }
