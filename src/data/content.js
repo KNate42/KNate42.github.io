@@ -1,10 +1,4 @@
-// all the copy lives here, keyed by language.
-// add a new locale by adding a top-level key with the same shape.
-// shape is intentionally loose — components destructure what they need
-// and don't validate, so missing fields just silently render undefined.
-// keep that in mind if you fork this.
 export const content = {
-  // ─── ENGLISH ─────────────────────────────────────────────
   en: {
     nav: {
       links: [
@@ -16,9 +10,7 @@ export const content = {
 
     hero: {
       eyebrow: 'Open to internships & collaborations',
-      // role rotator — exactly two strings, alternating.
-      // the third visible span in Hero.jsx is a duplicate of [0]
-      // so the loop wraps cleanly. don't add a 3rd here.
+      // exactly two — Hero.jsx duplicates [0] as a third span for clean looping
       roles: ['Data Scientist', 'Web Developer'],
       location: 'NKU · Petropavlovsk, Kazakhstan',
       bio: 'I work at the intersection of data and the web — visualising insights, learning ML, building functional interfaces.',
@@ -26,9 +18,6 @@ export const content = {
       ctaSecondary: 'View GitHub',
     },
 
-    // strings shown in the marquee/ticker. order matters — Marquee.jsx
-    // joins these against the LEVELS / DELTAS arrays by index, so don't
-    // resort this list without also updating those.
     stack: [
       'Python', 'Machine Learning', 'SQL', 'NumPy', 'Scikit-learn',
       'Pandas', 'HTML', 'CSS', 'JavaScript', 'React', 'MATLAB', 'Data Pipelines',
@@ -45,7 +34,6 @@ export const content = {
           title: 'University of Arizona',
           body: 'Studying Data Science with a focus on machine learning, statistical modelling, and data visualisation. Building personal web projects alongside coursework to sharpen programming skills.',
           tags: ['Python', 'Machine Learning', 'Statistics'],
-          // null href = no outbound link, REF column shows a dim dot
           href: null,
         },
         {
@@ -105,8 +93,6 @@ export const content = {
 
     contact: {
       label: '03',
-      // heading is split into 3 parts so the middle word can be styled
-      // (italic + signal colour) on its own. don't merge into one string.
       heading: ['Got a project or', 'idea', 'to work on?'],
       sub: 'Open to internships, research collaborations, and interesting side projects. Just reach out.',
       links: [
@@ -127,9 +113,6 @@ export const content = {
     },
   },
 
-  // ─── РУССКИЙ ─────────────────────────────────────────────
-  // mirrors the english tree exactly. if you add a key over there,
-  // add it here too — components don't have a fallback.
   ru: {
     nav: {
       links: [
@@ -141,9 +124,6 @@ export const content = {
 
     hero: {
       eyebrow: 'Открыт к стажировкам и сотрудничеству',
-      // first role kept in English on purpose — "Data Scientist" reads
-      // cleaner here than the russian equivalent, and matches how I'd
-      // actually introduce myself
       roles: ['Data Scientist', 'Веб-разработчик'],
       location: 'СКУ · Петропавловск, Казахстан',
       bio: 'Работаю на стыке данных и веба — визуализирую инсайты, изучаю ML, строю функциональные интерфейсы.',
@@ -151,9 +131,6 @@ export const content = {
       ctaSecondary: 'GitHub',
     },
 
-    // intentionally not localised — these are technology names,
-    // and "Пайплайны" stays as the one exception because it's awkward
-    // in english on a russian-language page
     stack: [
       'Python', 'Machine Learning', 'SQL', 'NumPy', 'Scikit-learn',
       'Pandas', 'HTML', 'CSS', 'JavaScript', 'React', 'MATLAB', 'Пайплайны',

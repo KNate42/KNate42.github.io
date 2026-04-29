@@ -1,9 +1,5 @@
 import { useEffect, useState } from 'react'
 
-// the very thin black strip at the top of the page — pretends to be
-// the masthead of a printed broadsheet. all metadata, no buttons.
-// time updates every second (Asia/Almaty, no DST since 2005,
-// so the offset is stable at +05).
 export default function Masthead({ lang }) {
   const [stamp, setStamp] = useState(stampNow())
 
@@ -12,7 +8,6 @@ export default function Masthead({ lang }) {
     return () => clearInterval(id)
   }, [])
 
-  // localized labels. coordinates point at NKU (Pushkin 86Б, Petropavlovsk).
   const items = lang === 'ru'
     ? [
         ['ВЫПУСК', 'N° 04'],
@@ -45,14 +40,12 @@ export default function Masthead({ lang }) {
             <span style={{ opacity: 0.5 }}>{k}</span>
             <span style={{ color: 'var(--signal)' }}>·</span>
             <span className="num-tabular">{v}</span>
-            {/* vertical separator between items, but not after the last */}
             {i < items.length - 1 && (
               <span style={{ opacity: 0.3 }} className="ml-4 hidden md:inline">│</span>
             )}
           </span>
         ))}
 
-        {/* "ON AIR" indicator — only shows on wide screens, where there's room */}
         <span className="ml-auto hidden lg:flex items-center gap-2 shrink-0">
           <span
             className="w-1.5 h-1.5 rounded-full blink"
@@ -66,16 +59,11 @@ export default function Masthead({ lang }) {
   )
 }
 
-// HH:MM:SS in Petropavlovsk time. Kazakhstan unified to UTC+5 in
-// March 2024 and doesn't observe DST, so the offset never shifts.
+// Kazakhstan has been on UTC+5 year-round since March 2024, no DST
 function stampNow() {
-  const d = new Date()
-  const t = d.toLocaleTimeString('en-US', {
+  return new Date().toLocaleTimeString('en-US', {
     timeZone: 'Asia/Almaty',
-    hour:   '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
+    hour: '2-digit', minute: '2-digit', second: '2-digit',
     hour12: false,
-  })
-  return `${t} +05`
+  }) + ' +05'
 }

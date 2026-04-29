@@ -1,19 +1,9 @@
 import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 
-// shared easing — same curve every section uses for consistency
 const ease = [0.22, 1, 0.36, 1]
 
-// hero / "section I".
-// three columns on desktop:
-//   left  — meta sidebar (subject / role / status)
-//   mid   — display title + bio + CTAs
-//   right — duotone photo with stat ledger underneath
-// on mobile this collapses to a single column and the meta sidebar
-// is hidden (it's just visual flavor).
 export default function Hero({ t, lang }) {
-  // scroll-driven parallax. tied to the section itself so the
-  // effect ends when you scroll past it instead of continuing forever.
   const sectionRef = useRef(null)
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -23,8 +13,7 @@ export default function Hero({ t, lang }) {
   const photoOpacity = useTransform(scrollYProgress, [0, 0.85], [1, 0.3])
   const titleY       = useTransform(scrollYProgress, [0, 1],    ['0%', '-25%'])
 
-  // little stat ledger under the photo. lat/long point at NKU
-  // (Pushkin 86B, Petropavlovsk, KZ). status flips with the lang toggle.
+  // coords point at NKU, Pushkin 86B, Petropavlovsk
   const stats = [
     ['LANG',     lang === 'ru' ? 'EN/RU' : 'EN/RU'],
     ['STACK',    'PY · JS · SQL'],
@@ -39,10 +28,7 @@ export default function Hero({ t, lang }) {
       id="home"
       className="relative px-4 md:px-8 pt-8 pb-14 md:pt-10 md:pb-20 overflow-hidden scanlines"
     >
-      {/* tiny editorial header strip — section number + sheet count.
-          on mobile the descriptive sub-labels ("— INTRODUCTION", "SHEET")
-          collide with the right side because of the 0.18em tracking;
-          they're hidden until sm: so the strip stays single-line. */}
+      {/* section strip */}
       <div className="max-w-[1500px] mx-auto mb-8 md:mb-14">
         <div className="flex items-center justify-between text-[10px] tracking-[0.12em] sm:tracking-[0.18em] whitespace-nowrap"
              style={{ color: 'var(--ink-mute)', fontFamily: 'var(--font-mono)' }}>
@@ -62,8 +48,7 @@ export default function Hero({ t, lang }) {
         <div className="rule-h mt-1" style={{ height: '0.5px' }} />
       </div>
 
-      {/* dot grid behind the content. mask makes it fade out away
-          from the top-right corner so it doesn't fight the text */}
+      {/* dot grid, masked to top-right so it doesn't compete with the text */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -77,7 +62,7 @@ export default function Hero({ t, lang }) {
 
       <div className="max-w-[1500px] mx-auto w-full relative grid grid-cols-12 gap-x-4 gap-y-10">
 
-        {/* LEFT — meta sidebar. md+ only. */}
+        {/* sidebar — desktop only */}
         <aside className="hidden md:block col-span-2 pt-2">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -109,7 +94,7 @@ export default function Hero({ t, lang }) {
           </motion.div>
         </aside>
 
-        {/* CENTER — display title + role rotator + bio + CTAs */}
+        {/* main column */}
         <motion.div
           className="col-span-12 md:col-span-7"
           style={{ y: titleY }}
@@ -125,8 +110,6 @@ export default function Hero({ t, lang }) {
             ✦ {t.hero.eyebrow.toUpperCase()}
           </motion.span>
 
-          {/* the big name. opsz 144 = display optical size,
-              SOFT/WONK turn on the more decorative glyph variants */}
           <h1
             className="display fg"
             style={{
@@ -155,9 +138,6 @@ export default function Hero({ t, lang }) {
             </RevealLine>
           </h1>
 
-          {/* role rotator — see .role-stack in index.css.
-              the third span is a copy of the first so the wraparound
-              isn't visible (otherwise you'd see a flash). */}
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
@@ -179,22 +159,15 @@ export default function Hero({ t, lang }) {
                 letterSpacing: '-0.02em',
               }}
             >
-              {/* color set explicitly on each child instead of relying
-                  on inheritance — framer-motion + flex-wrap + vertical-
-                  align combo on mobile was occasionally rendering the
-                  first role in light-mode --ink (near-black) on a dark
-                  background, leaving it invisible. */}
+              {/* color explicit on each child — inheritance was unreliable with framer-motion + flex-wrap on mobile */}
               <span className="role-stack">
                 <span style={{ color: 'var(--ink)' }}>{t.hero.roles[0]}</span>
                 <span style={{ color: 'var(--signal)' }}>{t.hero.roles[1]}</span>
-                {/* duplicate of [0] so the loop wraps cleanly */}
-                <span style={{ color: 'var(--ink)' }}>{t.hero.roles[0]}</span>
+                  <span style={{ color: 'var(--ink)' }}>{t.hero.roles[0]}</span>
               </span>
             </span>
           </motion.div>
 
-          {/* abstract / bio. .dropcap pulls the first letter into a
-              big floated cap — has to be on a block element to work */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
@@ -215,8 +188,6 @@ export default function Hero({ t, lang }) {
             </p>
           </motion.div>
 
-          {/* primary CTA: solid block that swipes signal red on hover.
-              the absolute span is the swipe; z-10 keeps the label on top */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
@@ -257,9 +228,7 @@ export default function Hero({ t, lang }) {
           </motion.div>
         </motion.div>
 
-        {/* RIGHT — photo + stats. parallax tied to scroll progress.
-            on mobile we narrow the photo to 8/12 and center it so the
-            3:4 portrait doesn't dominate the screen. */}
+        {/* photo + stat ledger */}
         <div className="col-span-8 col-start-3 md:col-span-3 md:col-start-auto">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
@@ -288,16 +257,12 @@ export default function Hero({ t, lang }) {
               />
             </div>
 
-            {/* fake figure caption */}
             <div className="mt-2 flex items-baseline justify-between text-[10px] tracking-[0.16em] fg-mute"
                  style={{ fontFamily: 'var(--font-mono)' }}>
               <span>{lang === 'ru' ? 'РИС.' : 'FIG.'} 01 — N.A. / {lang === 'ru' ? 'ПОРТРЕТ' : 'PORTRAIT'}</span>
               <span style={{ color: 'var(--signal)' }}>2026</span>
             </div>
 
-            {/* stats grid — the hairline borders are doubled
-                (border-l + per-cell border-right) to get the
-                exterior frame without an extra wrapper */}
             <dl className="mt-8 border-t border-l"
                 style={{ borderColor: 'var(--rule)' }}>
               {stats.map(([k, v]) => (
@@ -321,7 +286,6 @@ export default function Hero({ t, lang }) {
         </div>
       </div>
 
-      {/* scroll cue — animated dash + pointer */}
       <motion.div
         className="max-w-[1500px] mx-auto mt-16 md:mt-24 flex items-center gap-4 text-[10px] tracking-[0.2em] fg-mute"
         style={{ fontFamily: 'var(--font-mono)' }}
@@ -342,9 +306,7 @@ export default function Hero({ t, lang }) {
   )
 }
 
-// helper: text masked under an inline-block, then translated into view.
-// gives the "type rises into the line" effect on the name. used twice
-// in the h1 above; not exported because nothing else needs it.
+// text rises into view from below on mount
 function RevealLine({ children, delay = 0 }) {
   return (
     <span className="block overflow-hidden" style={{ paddingBottom: '0.12em', marginBottom: '-0.12em' }}>
