@@ -271,7 +271,7 @@ export default function Hero({ t, lang }) {
             {/* duotone + halftone classes do the print-photo treatment;
                 see index.css for what those actually stack up */}
             <div
-              className="relative duotone halftone overflow-hidden"
+              className="relative overflow-hidden"
               style={{
                 aspectRatio: '3/4',
                 background: 'var(--bg-lo)',
@@ -346,7 +346,7 @@ export default function Hero({ t, lang }) {
 // in the h1 above; not exported because nothing else needs it.
 function RevealLine({ children, delay = 0 }) {
   return (
-    <span className="block overflow-hidden">
+    <span className="block overflow-hidden" style={{ paddingBottom: '0.12em', marginBottom: '-0.12em' }}>
       <motion.span
         className="block"
         initial={{ y: '110%' }}
