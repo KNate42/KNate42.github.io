@@ -179,11 +179,16 @@ export default function Hero({ t, lang }) {
                 letterSpacing: '-0.02em',
               }}
             >
+              {/* color set explicitly on each child instead of relying
+                  on inheritance — framer-motion + flex-wrap + vertical-
+                  align combo on mobile was occasionally rendering the
+                  first role in light-mode --ink (near-black) on a dark
+                  background, leaving it invisible. */}
               <span className="role-stack">
-                <span>{t.hero.roles[0]}</span>
+                <span style={{ color: 'var(--ink)' }}>{t.hero.roles[0]}</span>
                 <span style={{ color: 'var(--signal)' }}>{t.hero.roles[1]}</span>
                 {/* duplicate of [0] so the loop wraps cleanly */}
-                <span>{t.hero.roles[0]}</span>
+                <span style={{ color: 'var(--ink)' }}>{t.hero.roles[0]}</span>
               </span>
             </span>
           </motion.div>
