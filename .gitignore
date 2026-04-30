@@ -13,6 +13,9 @@ dist-ssr
 *.local
 .claude/
 
+# Local docs — never push
+docs/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

@@ -10,29 +10,39 @@ import Projects from './components/sections/Projects'
 import Skills from './components/sections/Skills'
 import Contact from './components/sections/Contact'
 import Footer from './components/Footer'
+import ColleaguePage from './pages/ColleaguePage'
 
-// top-level shell. holds the two pieces of cross-section state we
-// actually need (theme + language) and threads them down. everything
-// else is local to its own component on purpose — saves a context
-// provider and the resume just isn't deep enough for that to matter.
 export default function App() {
   const { theme, toggle: toggleTheme } = useTheme()
-
-  // language: 'en' | 'ru'. starts in english; intentionally not
-  // persisted — user is here for ~30s, doesn't need a sticky pref.
   const [lang, setLang] = useState('en')
+  const [page, setPage] = useState('main')
   const t = content[lang]
   const toggleLang = () => setLang(l => (l === 'en' ? 'ru' : 'en'))
 
+  if (page === 'colleague') {
+    return (
+      <>
+        <Cursor />
+        <div className="grain-overlay" aria-hidden="true" />
+        <ColleaguePage onBack={() => setPage('main')} theme={theme} toggleTheme={toggleTheme} />
+      </>
+    )
+  }
+
   return (
     <>
-      {/* custom cursor first so it sits behind everything but the
-          grain layer; also no-ops on touch devices */}
       <Cursor />
       <div className="grain-overlay" aria-hidden="true" />
 
       <Masthead lang={lang} />
-      <Nav t={t} theme={theme} toggleTheme={toggleTheme} lang={lang} toggleLang={toggleLang} />
+      <Nav
+        t={t}
+        theme={theme}
+        toggleTheme={toggleTheme}
+        lang={lang}
+        toggleLang={toggleLang}
+        onViewColleague={() => setPage('colleague')}
+      />
 
       <main>
         <Hero t={t} lang={lang} />

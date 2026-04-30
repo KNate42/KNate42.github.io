@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
-export default function Nav({ t, theme, toggleTheme, lang, toggleLang }) {
+export default function Nav({ t, theme, toggleTheme, lang, toggleLang, onViewColleague }) {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen]         = useState(false)
 
@@ -74,6 +74,16 @@ export default function Nav({ t, theme, toggleTheme, lang, toggleLang }) {
           </nav>
 
           <div className="flex items-center gap-1.5 justify-end">
+            <button
+              onClick={onViewColleague}
+              className="hidden md:flex items-center h-7 px-2.5 text-[10px] font-medium tracking-[0.18em] fg-mute hover:fg transition-colors"
+              style={{ border: '1px solid var(--rule)', fontFamily: 'var(--font-mono)' }}
+              aria-label="View colleague profile"
+            >
+              <span style={{ color: 'var(--signal)', marginRight: '5px' }}>◆</span>
+              {lang === 'en' ? 'КОЛЛЕГА' : 'КОЛЛЕГА'}
+            </button>
+
             <button
               onClick={toggleLang}
               className="hidden md:flex items-center h-7 px-2.5 text-[10px] font-medium tracking-[0.18em] fg-mute hover:fg transition-colors"
@@ -149,6 +159,14 @@ export default function Nav({ t, theme, toggleTheme, lang, toggleLang }) {
                 style={{ border: '1px solid var(--rule)', fontFamily: 'var(--font-mono)' }}
               >
                 {lang === 'en' ? 'EN / RU' : 'RU / EN'}
+              </button>
+              <button
+                onClick={() => { close(); onViewColleague() }}
+                className="h-10 px-4 text-xs tracking-widest flex items-center gap-2"
+                style={{ border: '1px solid var(--rule)', fontFamily: 'var(--font-mono)', color: 'var(--signal)' }}
+              >
+                <span>◆</span>
+                <span className="fg">КОЛЛЕГА</span>
               </button>
               <span className="text-[10px] tracking-[0.18em] fg-mute ml-auto" style={{ fontFamily: 'var(--font-mono)' }}>
                 BUREAU OF DATA × WEB
