@@ -1,0 +1,9 @@
+{
+  "name": "knate42-contact",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "deploy": "npx -y wrangler@4 deploy"
+  }
+}
