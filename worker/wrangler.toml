@@ -3,5 +3,7 @@ main = "src/index.js"
 compatibility_date = "2026-09-01"
 workers_dev = true
 
+# BOT_TOKEN and CHAT_ID are Secrets (dashboard or `wrangler secret put`), never put them in this file:
+# the repo is public, and plain-text vars set in the dashboard are dropped by the next `wrangler deploy`.
 [vars]
 ALLOWED_ORIGINS = "https://knate42.github.io,http://localhost:5173,http://localhost:4173"
