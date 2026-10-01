@@ -10,6 +10,8 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+# build output is ignored; the test that checks it is not
+!/test/dist
 .wrangler
 *.local
 .claude/

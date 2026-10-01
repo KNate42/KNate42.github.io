@@ -47,3 +47,8 @@ a { color: inherit; text-decoration: none; }
     radial-gradient(900px 620px at 95% -14%, var(--glow-b), transparent 60%),
     var(--wall);
 }
+
+/* styles target the <img>; the wrapper must not add a box */
+picture { display: contents; }
+
+.icon-defs { position: absolute; width: 0; height: 0; }

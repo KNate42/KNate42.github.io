@@ -1,18 +1,25 @@
 import { useEffect, useRef, useState } from 'react'
 import { content } from './data/content.js'
+import { WINDOW_IDS } from './lib/windows.js'
 import { toggleTheme } from './lib/theme.js'
 import { useClock } from './hooks/useClock.js'
+import { useWindows } from './hooks/useWindows.js'
+import IconDefs from './components/IconDefs.jsx'
 import MenuBar from './components/MenuBar.jsx'
 import Menu from './components/Menu.jsx'
 import Desktop from './components/Desktop.jsx'
+import Window from './components/Window.jsx'
+import Dock from './components/Dock.jsx'
 
 export default function App() {
   const [lang, setLang] = useState('en')
   const [menuOpen, setMenuOpen] = useState(false)
+  const deskRef = useRef(null)
+  const wm = useWindows(deskRef)
   const clock = useClock(lang)
   const t = content[lang]
   const live = useRef({})
-  live.current = { menuOpen }
+  live.current = { menuOpen, front: wm.front, close: wm.close }
 
   useEffect(() => {
     document.documentElement.lang = lang
@@ -20,9 +27,12 @@ export default function App() {
 
   useEffect(() => {
     const onKey = (e) => {
-      if (e.key !== 'Escape' || !live.current.menuOpen) return
-      setMenuOpen(false)
-      document.querySelector('[data-menu-button]')?.focus()
+      if (e.key !== 'Escape') return
+      const { menuOpen, front, close } = live.current
+      if (menuOpen) {
+        setMenuOpen(false)
+        document.querySelector('[data-menu-button]')?.focus()
+      } else if (front) close(front)
     }
     const onDown = (e) => {
       if (!e.target.closest('#na-menu, [data-menu-button]')) setMenuOpen(false)
@@ -41,22 +51,44 @@ export default function App() {
     if (opening && e.detail === 0) requestAnimationFrame(() => document.querySelector('#na-menu .mi')?.focus())
   }
 
+  const bodies = {
+    about: null,
+    projects: null,
+    skills: null,
+    contact: null,
+  }
+
   return (
     <div className="os">
+      <IconDefs />
       <MenuBar
         t={t}
         lang={lang}
-        appTitle={t.desktop}
+        appTitle={wm.front ? t.titles[wm.front] : t.desktop}
         clock={clock}
         menuOpen={menuOpen}
         onToggleMenu={toggleMenu}
         onToggleLang={() => setLang((l) => (l === 'en' ? 'ru' : 'en'))}
         onToggleTheme={toggleTheme}
       />
-      <Menu t={t} open={menuOpen} onAbout={() => setMenuOpen(false)} onClose={() => setMenuOpen(false)} />
-      <main className="desk">
+      <Menu
+        t={t}
+        open={menuOpen}
+        onAbout={() => {
+          setMenuOpen(false)
+          wm.open('about')
+        }}
+        onClose={() => setMenuOpen(false)}
+      />
+      <main className="desk" ref={deskRef}>
         <Desktop t={t} lang={lang} />
+        {WINDOW_IDS.map((id) => (
+          <Window key={id} id={id} title={t.titles[id]} ui={t.ui} win={wm.state.wins[id]} z={wm.z(id)} front={wm.front === id} pos={wm.pos[id]} phone={wm.phone} wm={wm}>
+            {bodies[id]}
+          </Window>
+        ))}
       </main>
+      <Dock t={t} wins={wm.state.wins} onItem={wm.dock} />
     </div>
   )
 }
