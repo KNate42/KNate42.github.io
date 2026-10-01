@@ -55,3 +55,9 @@ test('all four windows and the dock are prerendered', () => {
   assert.ok(html.includes('<nav class="dock"'))
   assert.ok(html.includes('/image/me-320.avif'))
 })
+
+test('window texts are prerendered for search engines', () => {
+  for (const text of ['I work at the intersection of data and the web', 'University of Arizona — Data Science', 'English, Russian', 'Organoid Intelligence — report', 'Levels are my own assessment', 'NumPy &amp; Scikit-learn']) {
+    assert.ok(html.includes(text), text)
+  }
+})

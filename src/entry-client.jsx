@@ -6,6 +6,7 @@ import './styles/desktop.css'
 import './styles/menubar.css'
 import './styles/window.css'
 import './styles/dock.css'
+import './styles/content.css'
 import App from './App.jsx'
 
 const root = document.getElementById('root')

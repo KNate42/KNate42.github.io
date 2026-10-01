@@ -10,6 +10,9 @@ import Menu from './components/Menu.jsx'
 import Desktop from './components/Desktop.jsx'
 import Window from './components/Window.jsx'
 import Dock from './components/Dock.jsx'
+import About from './components/windows/About.jsx'
+import Projects from './components/windows/Projects.jsx'
+import Skills from './components/windows/Skills.jsx'
 
 export default function App() {
   const [lang, setLang] = useState('en')
@@ -52,9 +55,9 @@ export default function App() {
   }
 
   const bodies = {
-    about: null,
-    projects: null,
-    skills: null,
+    about: <About t={t} onContact={() => wm.open('contact')} />,
+    projects: <Projects t={t} />,
+    skills: <Skills t={t} />,
     contact: null,
   }
 
