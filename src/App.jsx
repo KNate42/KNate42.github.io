@@ -13,6 +13,7 @@ import Dock from './components/Dock.jsx'
 import About from './components/windows/About.jsx'
 import Projects from './components/windows/Projects.jsx'
 import Skills from './components/windows/Skills.jsx'
+import Contact from './components/windows/Contact.jsx'
 
 export default function App() {
   const [lang, setLang] = useState('en')
@@ -58,7 +59,7 @@ export default function App() {
     about: <About t={t} onContact={() => wm.open('contact')} />,
     projects: <Projects t={t} />,
     skills: <Skills t={t} />,
-    contact: null,
+    contact: <Contact t={t} lang={lang} />,
   }
 
   return (

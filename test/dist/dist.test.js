@@ -61,3 +61,10 @@ test('window texts are prerendered for search engines', () => {
     assert.ok(html.includes(text), text)
   }
 })
+
+test('contact window is prerendered', () => {
+  assert.ok(html.includes('id="contact-form"'))
+  assert.ok(html.includes('Goes straight to my Telegram'))
+  assert.ok(html.includes('mailto:anfinogentov@arizona.edu'))
+  assert.ok(!html.includes('24 hours'))
+})
