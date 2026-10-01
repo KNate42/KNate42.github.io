@@ -1,0 +1,62 @@
+.menubar {
+  position: absolute;
+  z-index: 50;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 40px;
+  padding: 0 8px;
+  border-bottom: 1px solid var(--bar-line);
+  background: var(--bar);
+  backdrop-filter: blur(20px) saturate(170%);
+  -webkit-backdrop-filter: blur(20px) saturate(170%);
+  font-size: 15px;
+}
+
+.mb-btn { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 11px; border: 0; border-radius: 8px; background: transparent; font-size: 15px; }
+.mb-btn:hover, .mb-btn[aria-expanded="true"] { background: var(--hover); }
+.mb-btn svg { width: 17px; height: 17px; }
+.mb-logo { font-weight: 800; letter-spacing: -.02em; }
+.mb-app { padding: 0 8px; font-weight: 700; white-space: nowrap; }
+.mb-right { display: flex; align-items: center; gap: 2px; margin-left: auto; }
+
+.kbd { display: inline-flex; align-items: center; justify-content: center; min-width: 36px; height: 24px; padding: 0 5px; border: 1.5px solid currentColor; border-radius: 6px; font-size: 15px; font-weight: 700; letter-spacing: .02em; line-height: 1; }
+
+.i-sun { display: none; }
+html.light .i-sun { display: block; }
+html.light .i-moon { display: none; }
+
+.mb-clock { min-width: 168px; padding: 0 10px 0 8px; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.clk-short { display: none; }
+
+.menu {
+  position: absolute;
+  z-index: 60;
+  top: 44px;
+  left: 8px;
+  display: none;
+  min-width: 290px;
+  padding: 6px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: var(--menu);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(24px) saturate(170%);
+  -webkit-backdrop-filter: blur(24px) saturate(170%);
+}
+.menu.open { display: block; }
+.menu .mi { display: flex; align-items: center; justify-content: space-between; gap: 16px; width: 100%; height: 36px; padding: 0 12px; border: 0; border-radius: 7px; background: transparent; font-size: 15px; text-align: left; }
+.menu .mi:hover, .menu .mi:focus-visible { background: var(--acc); color: var(--acc-ink); outline: none; }
+.menu hr { height: 1px; margin: 5px 8px; border: 0; background: var(--line); }
+
+@media (max-width: 700px) {
+  .menubar { height: 46px; padding: 0 10px; }
+  .mb-app { display: none; }
+  .mb-clock { min-width: 56px; padding: 0 6px; }
+  .clk-full { display: none; }
+  .clk-short { display: inline; }
+  .menu { top: 50px; left: 8px; right: 8px; min-width: 0; }
+}

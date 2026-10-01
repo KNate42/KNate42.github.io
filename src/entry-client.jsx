@@ -3,6 +3,7 @@ import { createRoot, hydrateRoot } from 'react-dom/client'
 import './styles/tokens.css'
 import './styles/base.css'
 import './styles/desktop.css'
+import './styles/menubar.css'
 import App from './App.jsx'
 
 const root = document.getElementById('root')
