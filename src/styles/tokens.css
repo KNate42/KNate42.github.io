@@ -1,0 +1,57 @@
+/* Colour tokens. Dark is the default; html.light switches to the light set.
+   index.html adds .light before the first paint. */
+:root {
+  color-scheme: dark;
+  --wall: #0b0b0e;
+  --glow-a: rgba(255, 90, 44, .24);
+  --glow-b: rgba(94, 92, 230, .26);
+  --bar: rgba(22, 22, 26, .58);
+  --bar-line: rgba(255, 255, 255, .07);
+  --win: #1c1c1f;
+  --win-2: #232327;
+  --line: rgba(255, 255, 255, .1);
+  --txt: #f5f5f7;
+  --soft: #d8d8de;
+  --mute: #a3a3aa;
+  --acc: #ff5a2c;
+  --acc-ink: #170803;
+  --acc-text: #fc8869;
+  --green: #32d74b;
+  --danger: #ff6961;
+  --dock: rgba(40, 40, 46, .5);
+  --dock-line: rgba(255, 255, 255, .15);
+  --menu: rgba(38, 38, 43, .86);
+  --shadow: 0 24px 70px rgba(0, 0, 0, .55), 0 0 0 .5px rgba(0, 0, 0, .9);
+  --hover: rgba(255, 255, 255, .1);
+  --field: #141417;
+  --chip: #2a2a2f;
+  --banner-a: rgba(255, 90, 44, .85);
+  --banner-b: rgba(94, 92, 230, .85);
+}
+
+html.light {
+  color-scheme: light;
+  --wall: #e7e7ec;
+  --glow-a: rgba(255, 90, 44, .2);
+  --glow-b: rgba(94, 92, 230, .2);
+  --bar: rgba(246, 246, 248, .72);
+  --bar-line: rgba(0, 0, 0, .08);
+  --win: #ffffff;
+  --win-2: #f4f4f6;
+  --line: rgba(0, 0, 0, .1);
+  --txt: #1d1d1f;
+  --soft: #3a3a3f;
+  --mute: #5f5f64;
+  --acc-text: #993e26;
+  --green: #1a7f32;
+  --danger: #b3261e;
+  --dock: rgba(255, 255, 255, .55);
+  --dock-line: rgba(0, 0, 0, .1);
+  --menu: rgba(250, 250, 252, .92);
+  --shadow: 0 22px 60px rgba(0, 0, 0, .2), 0 0 0 .5px rgba(0, 0, 0, .2);
+  --hover: rgba(0, 0, 0, .06);
+  --field: #f4f4f6;
+  --chip: #ececf0;
+  --banner-a: rgba(255, 90, 44, .55);
+  --banner-b: rgba(94, 92, 230, .5);
+}
