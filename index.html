@@ -79,10 +79,8 @@
       } catch (e) {}
       try {
         var calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-        if (!calm && !sessionStorage.getItem('na-intro')) {
-          root.classList.add('intro')
-          sessionStorage.setItem('na-intro', '1')
-        }
+        // play the intro on every load, unless the user asked for less motion
+        if (!calm) root.classList.add('intro')
       } catch (e) {}
       var id = location.hash.slice(1)
       if (/^(about|projects|skills|contact)$/.test(id)) root.setAttribute('data-boot', id)
