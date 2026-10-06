@@ -1,4 +1,5 @@
 import { useLayoutEffect, useRef } from 'react'
+import { uiScale } from '../lib/scale.js'
 
 export default function Window({ id, title, ui, win, z, front, pos, phone, wm, children }) {
   const ref = useRef(null)
@@ -31,7 +32,8 @@ export default function Window({ id, title, ui, win, z, front, pos, phone, wm, c
 
   function startDrag(e) {
     if (phone || win.max || e.button !== 0 || e.target.closest('button')) return
-    drag.current.start = { x: e.clientX - drag.current.x, y: e.clientY - drag.current.y }
+    const k = uiScale(ref.current)
+    drag.current.start = { x: e.clientX / k - drag.current.x, y: e.clientY / k - drag.current.y, k }
     e.currentTarget.setPointerCapture(e.pointerId)
     ref.current.classList.add('dragging')
   }
@@ -39,8 +41,8 @@ export default function Window({ id, title, ui, win, z, front, pos, phone, wm, c
   function moveDrag(e) {
     const start = drag.current.start
     if (!start) return
-    drag.current.x = e.clientX - start.x
-    drag.current.y = e.clientY - start.y
+    drag.current.x = e.clientX / start.k - start.x
+    drag.current.y = e.clientY / start.k - start.y
     ref.current.style.translate = `${drag.current.x}px ${drag.current.y}px`
   }
 

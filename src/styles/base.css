@@ -38,8 +38,14 @@ a { color: inherit; text-decoration: none; }
 :focus-visible { outline: 2px solid var(--acc); outline-offset: 2px; }
 
 .os {
+  --k: .8; /* overall interface scale, 1 = full size */
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: calc(100% / var(--k));
+  height: calc(100% / var(--k));
+  transform: scale(var(--k));
+  transform-origin: 0 0;
   overflow: hidden;
   isolation: isolate;
   background:
@@ -54,3 +60,8 @@ picture { display: contents; }
 picture > source { display: none; }
 
 .icon-defs { position: absolute; width: 0; height: 0; }
+
+/* phones keep full size so tap targets stay big */
+@media (max-width: 700px) {
+  .os { --k: 1; }
+}
