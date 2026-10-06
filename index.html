@@ -18,55 +18,6 @@
   <link rel="icon" href="/image/favicon.svg" type="image/svg+xml" />
   <link rel="icon" href="/image/logo.png" type="image/png" />
   <link rel="preload" href="/fonts/inter-latin-opsz.woff2" as="font" type="font/woff2" crossorigin />
-  <style>
-    /* intro: name appears, squeezes into a dot, the dot opens into the desktop */
-    #intro { display: none; }
-    html.intro #intro {
-      display: grid; place-items: center; position: fixed; inset: 0; z-index: 9999;
-      cursor: pointer; pointer-events: auto; overflow: hidden;
-    }
-    html.intro body { overflow: hidden; }
-    html.intro #root { clip-path: circle(0 at 50% 50%); pointer-events: none; }
-    #intro .it {
-      display: flex; white-space: pre; color: var(--txt, #f5f5f7);
-      font: 600 clamp(26px, 6vw, 64px)/1 'Inter Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
-      letter-spacing: -.02em;
-    }
-    #intro .it span { display: inline-block; opacity: 0; will-change: transform, opacity, filter; }
-    #intro .id {
-      position: absolute; left: 50%; top: 50%; width: 14px; height: 14px; margin: -7px 0 0 -7px;
-      border-radius: 50%; background: #ff5a2c; box-shadow: 0 0 28px 6px rgba(255, 90, 44, .55);
-      opacity: 0; transform: scale(0);
-    }
-    html.intro-go #intro .it span {
-      animation:
-        i-in .55s cubic-bezier(.2, .8, .2, 1) calc(var(--i) * 32ms) forwards,
-        i-sq .62s cubic-bezier(.7, 0, .84, 0) 1.65s forwards;
-    }
-    html.intro-go #intro .id { animation: i-dot .72s cubic-bezier(.3, 0, .2, 1) 2.12s forwards; }
-    html.intro-go #root { animation: i-open .95s cubic-bezier(.7, 0, .2, 1) 2.68s forwards; }
-    html.intro-go #intro { animation: i-out .35s ease 3.15s forwards; }
-    @keyframes i-in {
-      from { opacity: 0; transform: translateY(.45em); filter: blur(10px); }
-      to { opacity: 1; transform: none; filter: blur(0); }
-    }
-    @keyframes i-sq {
-      from { opacity: 1; transform: none; filter: blur(0); }
-      70% { opacity: 1; }
-      to { opacity: 0; transform: translateX(var(--dx)) scale(.05); filter: blur(2px); }
-    }
-    @keyframes i-dot {
-      0% { opacity: 0; transform: scale(0); }
-      45% { opacity: 1; transform: scale(1.35); }
-      70% { opacity: 1; transform: scale(1); }
-      100% { opacity: 1; transform: scale(1); }
-    }
-    @keyframes i-open {
-      from { clip-path: circle(0 at 50% 50%); }
-      to { clip-path: circle(80vmax at 50% 50%); }
-    }
-    @keyframes i-out { to { opacity: 0; } }
-  </style>
   <script>
     (function () {
       var root = document.documentElement
@@ -77,61 +28,12 @@
           document.querySelector('meta[name="theme-color"]').setAttribute('content', '#e7e7ec')
         }
       } catch (e) {}
-      try {
-        var calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-        if (!calm && !sessionStorage.getItem('na-intro')) {
-          root.classList.add('intro')
-          sessionStorage.setItem('na-intro', '1')
-        }
-      } catch (e) {}
       var id = location.hash.slice(1)
       if (/^(about|projects|skills|contact)$/.test(id)) root.setAttribute('data-boot', id)
     })()
   </script>
 </head>
 <body>
-  <div id="intro" aria-hidden="true"><div class="it">Nikita Anfinogentov</div><div class="id"></div></div>
-  <script>
-    (function () {
-      var root = document.documentElement
-      var intro = document.getElementById('intro')
-      if (!root.classList.contains('intro')) return
-      var done = false
-      function finish() {
-        if (done) return
-        done = true
-        root.classList.remove('intro', 'intro-go')
-        intro.remove()
-      }
-      var it = intro.firstChild
-      var text = it.textContent
-      it.textContent = ''
-      for (var k = 0; k < text.length; k++) {
-        var sp = document.createElement('span')
-        sp.textContent = text[k]
-        sp.style.setProperty('--i', k)
-        it.appendChild(sp)
-      }
-      function go() {
-        if (done || root.classList.contains('intro-go')) return
-        var spans = it.children
-        var box = it.getBoundingClientRect()
-        var mid = box.left + box.width / 2
-        for (var j = 0; j < spans.length; j++) {
-          var r = spans[j].getBoundingClientRect()
-          spans[j].style.setProperty('--dx', mid - (r.left + r.width / 2) + 'px')
-        }
-        root.classList.add('intro-go')
-        setTimeout(finish, 3600)
-      }
-      var ready = document.fonts && document.fonts.ready
-      if (ready) ready.then(go)
-      setTimeout(go, 1200)
-      setTimeout(finish, 6000)
-      intro.addEventListener('click', finish)
-      document.addEventListener('keydown', finish, { once: true })
-    })()
-  </script>
   <div id="root"><!--app-html--></div>
   <script type="module" src="/src/entry-client.jsx"></script>
 </body>
